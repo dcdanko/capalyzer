@@ -3,15 +3,13 @@
 
 from setuptools import setup
 
-with open('README.md') as readme_file:
-    readme = readme_file.read()
 
 requirements = [
     # No requirements.
 ]
 
 setup(
-    name='py_archy',
+    name='capalyzer',
     version='1.0.2',
     description="Implementation of the popular node-archy tool in python",
     author="David C. Danko",
@@ -19,15 +17,20 @@ setup(
     author_email='dcdanko@gmail.com',
     url='https://github.com/dcdanko/pyarchy',
     packages=[
-        'pyarchy',
+        'metasub_cap_downstream',
     ],
-    package_dir={'pyarchy':
-                 'py_archy'},
+    package_dir={'metasub_cap_downstream':
+                 'metasub_cap_downstream'},
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
     zip_safe=False,
-    keywords='pyarchy',
+    keywords='metasub',
+    entry_points={
+        'console_scripts': [
+            'capalyzer=metasub_cap_downstream.cli:main'
+        ]
+    },
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
