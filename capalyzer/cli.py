@@ -3,12 +3,12 @@ import click
 from os import mkdir
 from sys import stdout
 from .data_table_factory import DataTableFactory
-from json import loads
+from json import dumps
 
 
 def write_json(tbl, filename):
     with open(filename, 'w') as f:
-        f.write(loads(tbl))
+        f.write(dumps(tbl))
 
 
 @click.group()
