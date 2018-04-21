@@ -47,7 +47,7 @@ class DataTableFactory:
         for fname in files:
             try:
                 sample, module, result = self._parse_core_file(fname)
-                fpath = abspath(join(dirname, fname))
+                fpath = abspath(fname)
                 self.samples.add(sample)
                 self.parsed.append((sample, module, result, fpath))
             except ValueError:
