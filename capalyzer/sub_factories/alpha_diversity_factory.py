@@ -1,5 +1,5 @@
-from metasub_cap_downstream.data_table_factory import SubFactory
-from metasub_cap_downstream.utils import readJSON
+from .subfactory import SubFactory
+from capalyzer.utils import readJSON
 from pandas import DataFrame
 
 

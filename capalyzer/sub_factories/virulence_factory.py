@@ -1,4 +1,4 @@
-from metasub_cap_downstream.data_table_factory import SubFactory
+from .subfactory import SubFactory
 from pandas import DataFrame
 
 
@@ -21,7 +21,7 @@ def parse_gene_table(gene_table, metric):
     return data
 
 
-class MethylFactory(SubFactory):
+class VirulenceFactory(SubFactory):
 
     def generic(self, metric):
         genefs = self.factory.get_results(module='align_to_methyltransferases',

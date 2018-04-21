@@ -1,5 +1,5 @@
-from metasub_cap_downstream.data_table_factory import SubFactory
-from metasub_cap_downstream.utils import parse_key_val_file
+from .subfactory import SubFactory
+from capalyzer.utils import parse_key_val_file
 from pandas import DataFrame
 
 
@@ -21,7 +21,7 @@ class PathwayFactory(SubFactory):
 
         def parse(fname):
             return {k: v
-                    for k, v in parse_key_val_file(fname)
+                    for k, v in parse_key_val_file(fname).items()
                     if filter_keys(k)}
 
         tbl = {sname: parse(fname)

@@ -1,6 +1,7 @@
 from os import listdir
 from os.path import join, abspath
 from .sub_factories import *
+from pandas import DataFrame
 
 
 class DataTableFactory:
@@ -38,7 +39,7 @@ class DataTableFactory:
                 yield rec
 
     def get_metadata(self):
-        pass
+        return DataFrame(self.metadata).transpose()
 
     def _parse_core_dir(self, dirname):
         files = [f for f in listdir(dirname)]

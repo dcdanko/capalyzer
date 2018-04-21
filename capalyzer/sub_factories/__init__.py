@@ -6,4 +6,3 @@ from .methyltransferase_factory import MethylFactory
 from .pathway_factory import PathwayFactory
 from .taxonomy_factory import TaxonomyFactory
 from .virulence_factory import VirulenceFactory
-

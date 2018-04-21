@@ -1,5 +1,5 @@
-from metasub_cap_downstream.data_table_factory import SubFactory
-from metasub_cap_downstream.utils import parse_key_val_file
+from .subfactory import SubFactory
+from capalyzer.utils import parse_key_val_file
 from pandas import DataFrame
 
 
@@ -11,7 +11,8 @@ class AMRFactory(SubFactory):
         tbl = {sname: parse_key_val_file(fname,
                                          key_column=1,
                                          val_column=2,
-                                         kind=int)
+                                         kind=int,
+                                         skip=1)
                for sname, fname in classfs}
         tbl = DataFrame(tbl).fillna(0).transpose()
         return tbl

@@ -1,5 +1,5 @@
 from .subfactory import SubFactory
-from metasub_cap_downstream.utils import parse_key_val_file
+from capalyzer.utils import parse_key_val_file
 from pandas import DataFrame
 
 
@@ -23,9 +23,10 @@ def clean_taxa(taxa):
 class TaxonomyFactory(SubFactory):
     kraken_mod = 'kraken_taxonomy_profiling'
 
-    def kraken(self, top_n=0):
+    def kraken(self, top_n=0, cutoff=0):
         taxafs = self.factory.get_results(module=self.kraken_mod,
                                           result='mpa')
+
         def parse(fname):
             vec = {}
             tot = 0
@@ -33,7 +34,9 @@ class TaxonomyFactory(SubFactory):
                 if is_species(k):
                     tot += v
                     vec[clean_taxa(k)] = v
-            vec = {k: v / tot for k, v in vec.items()}
+            vec = {k: v / tot
+                   for k, v in vec.items()
+                   if (v / tot) >= cutoff}
             return get_top_n(vec, top_n)
 
         tbl = {sname: parse(fname)

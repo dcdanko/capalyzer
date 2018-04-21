@@ -1,4 +1,4 @@
-from metasub_cap_downstream.data_table_factory import SubFactory
+from .subfactory import SubFactory
 from pandas import DataFrame
 from json import loads
 from numpy import percentile
@@ -24,6 +24,6 @@ class HMPFactory(SubFactory):
 
     def dists(self):
         tbl = {sname: as_dist(raw_vals)
-               for sname, raw_vals in self.raw.items()}
+               for sname, raw_vals in self.raw().items()}
         tbl = DataFrame(tbl).transpose()
         return tbl

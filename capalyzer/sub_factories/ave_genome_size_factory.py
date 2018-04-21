@@ -1,5 +1,5 @@
-from metasub_cap_downstream.data_table_factory import SubFactory
-from pandas import DataFrame
+from .subfactory import SubFactory
+from pandas import Series
 
 
 def get_ags_from_file(fname):
@@ -18,5 +18,5 @@ class AGSFactory(SubFactory):
                                          result='stats')
         tbl = {sname: get_ags_from_file(fname)
                for sname, fname in agsfs}
-        tbl = DataFrame(tbl).transpose()
+        tbl = Series(tbl)
         return tbl
