@@ -1,5 +1,5 @@
-from os import isfile
-from os.path import join, abspath
+
+from os.path import join, abspath, isfile
 from .sub_factories import *
 from pandas import DataFrame
 from glob import glob
