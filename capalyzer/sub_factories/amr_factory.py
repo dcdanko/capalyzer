@@ -17,6 +17,12 @@ class AMRFactory(SubFactory):
         tbl = DataFrame(tbl).fillna(0).transpose()
         return tbl
 
+    def gene(self):
+        return self.generic('gene')
+
+    def group(self):
+        return self.generic('group')
+
     def classus(self):
         return self.generic('classus')
 

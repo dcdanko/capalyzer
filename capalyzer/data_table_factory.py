@@ -1,7 +1,8 @@
-from os import listdir
+from os import isfile
 from os.path import join, abspath
 from .sub_factories import *
 from pandas import DataFrame
+from glob import glob
 
 
 class DataTableFactory:
@@ -42,7 +43,7 @@ class DataTableFactory:
         return DataFrame(self.metadata).transpose()
 
     def _parse_core_dir(self, dirname):
-        files = [f for f in listdir(dirname)]
+        files = [f for f in glob(dirname + '/**/*') if isfile(f)]
         for fname in files:
             try:
                 sample, module, result = self._parse_core_file(fname)
