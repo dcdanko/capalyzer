@@ -21,11 +21,11 @@ def clean_taxa(taxa):
 
 
 class TaxonomyFactory(SubFactory):
-    kraken_mod = 'kraken_taxonomy_profiling'
+    kraken_mod = 'krakenhll_taxonomy_profiling'
 
     def kraken(self, top_n=0, cutoff=0):
         taxafs = self.factory.get_results(module=self.kraken_mod,
-                                          result='mpa')
+                                          result='result')
 
         def parse(fname):
             vec = {}

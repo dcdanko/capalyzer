@@ -18,6 +18,20 @@ def main():
 
 @main.command()
 @click.argument('dirname')
+def macrobes(dirname):
+    dff = DataTableFactory(dirname)
+    stdout.write(dff.macrobes.tables().to_csv())
+
+
+@main.command()
+@click.argument('dirname')
+def taxonomy(dirname):
+    dff = DataTableFactory(dirname)
+    stdout.write(dff.taxonomy.kraken().to_csv())
+
+
+@main.command()
+@click.argument('dirname')
 @click.argument('tables')
 def tables(dirname, tables):
     mkdir(tables)

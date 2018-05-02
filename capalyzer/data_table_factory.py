@@ -24,6 +24,7 @@ class DataTableFactory:
         self.pathways = PathwayFactory(self)
         self.taxonomy = TaxonomyFactory(self)
         self.vir = VirulenceFactory(self)
+        self.macrobes = MacrobeFactory(self)
 
     def get_results(self, module=None, result=None):
         '''Return [(<sample-name>, <file-type>, <file-name>)] for rtype.'''
