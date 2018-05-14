@@ -18,6 +18,6 @@ class MacrobeFactory(SubFactory):
         tbl = DataFrame.from_dict({
             sname: {
                 taxa: vals['rpkm'] for taxa, vals in jloads(fname).items()
-            } for sname, fname
+            } for sname, fname in macrobefs
         }, orient='index')
         return tbl

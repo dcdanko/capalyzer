@@ -20,7 +20,7 @@ def main():
 @click.argument('dirname')
 def macrobes(dirname):
     dff = DataTableFactory(dirname)
-    stdout.write(dff.macrobes.tables().to_csv())
+    stdout.write(dff.macrobes.table().to_csv())
 
 
 @main.command()

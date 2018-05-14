@@ -25,7 +25,7 @@ class TaxonomyFactory(SubFactory):
 
     def kraken(self, top_n=0, cutoff=0):
         taxafs = self.factory.get_results(module=self.kraken_mod,
-                                          result='result')
+                                          result='report')
 
         def parse(fname):
             vec = {}
