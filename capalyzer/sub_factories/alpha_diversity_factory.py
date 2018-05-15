@@ -16,11 +16,11 @@ class AlphaDiversityFactory(SubFactory):
         tbl = DataFrame(tbl).transpose()
         return tbl
 
-    def chao1(self, tool='kraken', level='species'):
-        return self.get_generic(tool, 'chao1', level=level)
+    def chao1(self, tool='kraken', level='species', nreads='100000'):
+        return self.get_generic(tool, 'chao1', level=level)[nreads]
 
-    def shannon(self, tool='kraken', level='species'):
-        return self.get_generic(tool, 'shannon_index', level=level)
+    def shannon(self, tool='kraken', level='species', nreads='100000'):
+        return self.get_generic(tool, 'shannon_index', level=level)[nreads]
 
-    def richness(self, tool='kraken', level='species'):
-        return self.get_generic(tool, 'richness', level=level)
+    def richness(self, tool='kraken', level='species', nreads='100000'):
+        return self.get_generic(tool, 'richness', level=level)[nreads]

@@ -9,7 +9,10 @@ def jloads(fname):
 
 
 def as_dist(raw_vals):
-    vals = percentile(raw_vals, [0, 25, 50, 75, 100])
+    vals = {
+        site: percentile(measures, [0, 25, 50, 75, 100])
+        for site, measures in raw_vals.items()
+    }
     return vals
 
 
@@ -25,5 +28,4 @@ class HMPFactory(SubFactory):
     def dists(self):
         tbl = {sname: as_dist(raw_vals)
                for sname, raw_vals in self.raw().items()}
-        tbl = DataFrame(tbl).transpose()
         return tbl
