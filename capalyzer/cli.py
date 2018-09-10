@@ -115,6 +115,12 @@ def tables(overwrite, pathways, dirname, tables):
     my_write_csv(dff.taxonomy.kraken, (), 'minikraken.kraken_species_top100.csv', top_n=100)
     my_write_csv(dff.taxonomy.kraken, (), 'minikraken.kraken_species_1percent_cutoff.csv', cutoff=0.01)
     my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.krakenhll_species.csv', top_n=250)
+    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.bacteria.krakenhll_species.read_counts.csv',
+                 level='strict', top_taxa='bacteria', proportions=False)
+    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.virus.krakenhll_species.read_counts.csv',
+                 level='medium', top_taxa='virus', proportions=False)
+    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.fungi.krakenhll_species.read_counts.csv',
+                 level='strict', top_taxa='fungi', proportions=False)
     my_write_csv(dff.taxonomy.metaphlan2, (), 'metaphlan2_species.csv')
     my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_species.csv', rank='species')
     my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_genus.csv', rank='genus')
