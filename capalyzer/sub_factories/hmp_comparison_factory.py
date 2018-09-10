@@ -1,5 +1,5 @@
 from .subfactory import SubFactory
-from pandas import DataFrame
+import pandas as pd
 from json import loads
 from numpy import percentile
 
@@ -10,7 +10,7 @@ def jloads(fname):
 
 def as_dist(raw_vals):
     vals = {
-        site: percentile(measures, [0, 25, 50, 75, 100])
+        site: list(percentile(measures, [0, 25, 50, 75, 100]))
         for site, measures in raw_vals.items()
     }
     return vals
@@ -28,4 +28,19 @@ class HMPFactory(SubFactory):
     def dists(self):
         tbl = {sname: as_dist(raw_vals)
                for sname, raw_vals in self.raw().items()}
+        return tbl
+
+    def raw_table(self):
+        cols = {
+            'sample_name': [],
+            'body_site': [],
+            'distance': [],
+        }
+        for sname, raw_vals in self.raw().items():
+            for site, measurements in raw_vals.items():
+                for measurement in measurements:
+                    cols['sample_name'].append(sname)
+                    cols['body_site'].append(site)
+                    cols['distance'].append(measurement)
+        tbl = pd.DataFrame.from_dict(cols, orient='columns')
         return tbl

@@ -15,10 +15,10 @@ class VirulenceFactory(SubFactory):
         return tbl
 
     def rpk(self):
-        return self.generic('RPK')
+        return self.generic('rpk')
 
     def rpkm(self):
-        return self.generic('RPKM')
+        return self.generic('rpkm')
 
     def rpkmg(self):
-        return self.generic('RPKMG')
+        return self.generic('rpkmg')

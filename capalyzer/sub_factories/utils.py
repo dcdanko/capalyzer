@@ -1,19 +1,23 @@
-
+from sys import stderr
 
 def parse_gene_table(gene_table, metric):
-    '''Return a parsed gene quantification table.'''
-    with open(gene_table) as gt:
-        gene_names = gt.readline().strip().split(',')[1:]
-        rpks = gt.readline().strip().split(',')[1:]
-        rpkms = gt.readline().strip().split(',')[1:]
-        rpkmgs = gt.readline().strip().split(',')[1:]
-
+    """Return a parsed gene quantification table."""
     data = {}
-    for i, gene_name in enumerate(gene_names):
-        row = {
-            'RPK': rpks[i],
-            'RPKM': rpkms[i],
-            'RPKMG': rpkmgs[i],
-        }
-        data[gene_name] = row[metric]
+    warn = None
+    with open(gene_table) as gfile:
+        gfile.readline()
+        for line in gfile:
+            try:
+                tkns = line.strip().split(',')
+                gene_name = tkns[0]
+                row = {
+                    'rpk': float(tkns[1]),
+                    'rpkm': float(tkns[2]),
+                    'rpkmg': float(tkns[3]),
+                }
+                data[gene_name] = row[metric]
+            except:
+                warn = True
+    if warn:
+        print(f'[WARNING] one or more lines failed to parse in {gene_table}', file=stderr) 
     return data

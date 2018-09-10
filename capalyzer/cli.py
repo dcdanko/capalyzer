@@ -1,7 +1,7 @@
 import click
 
-from os import mkdir
-from os.path import join, isfile
+from os import makedirs
+from os.path import join, isfile, getsize
 from sys import stdout, stderr
 from .data_table_factory import DataTableFactory
 from json import dumps
@@ -26,9 +26,46 @@ def macrobes(dirname):
 
 @main.command()
 @click.argument('dirname')
-def taxonomy(dirname):
+def readprops(dirname):
     dff = DataTableFactory(dirname)
-    stdout.write(dff.taxonomy.kraken().to_csv())
+    stdout.write(dff.readprops.table().to_csv())
+
+    
+@main.command()
+@click.option('-n', '--topn', default=0)
+@click.option('-m', '--min-cutoff', default=0)
+@click.option('-r', '--rank',
+              type=click.Choice(['species', 'genus']),
+              default='species')
+@click.option('-t', '--taxa',
+              type=click.Choice(['all', 'bacteria', 'virus', 'eukaryote', 'fungi']),
+              default='all')
+@click.option('--proportions/--read-counts', default=True)
+@click.option('-c', '--classifier',
+              type=click.Choice(['metaphlan2', 'kraken', 'krakenhll']),
+              default='krakenhll')
+@click.option('-s', '--strictness',
+              type=click.Choice(['permissive', 'medium', 'strict']),
+              default='permissive',
+              help='Choose permissiveness, only applies to krakenhll')
+@click.argument('dirname')
+def taxonomy(topn, min_cutoff, rank, taxa, proportions, classifier, strictness, dirname):
+    dff = DataTableFactory(dirname)
+    if classifier == 'metaphlan2':
+        classifier = dff.taxonomy.metaphlan2
+    elif classifier == 'kraken':
+        classifer = dff.taxonomy.kraken
+    elif classifier == 'krakenhll':
+        classifier = dff.taxonomy.krakenhll
+    tbl = classifier(
+        top_n=topn,
+        cutoff=min_cutoff,
+        rank=rank,
+        top_taxa=taxa,
+        proportions=proportions,
+        level=strictness,
+    )
+    stdout.write(tbl.to_csv())
 
 
 def write_csv(df, filename, dirname, overwrite=False):
@@ -36,6 +73,7 @@ def write_csv(df, filename, dirname, overwrite=False):
     if overwrite or not isfile(fname):
         df.to_csv(fname)
 
+        
 
 @main.command()
 @click.option('--overwrite/--no-overwrite', default=False)
@@ -43,31 +81,55 @@ def write_csv(df, filename, dirname, overwrite=False):
 @click.argument('tables')
 def tables(overwrite, dirname, tables):
     """Make a bunch of tables."""
-    mkdir(tables)
+    makedirs(tables, exist_ok=True)
 
     dff = DataTableFactory(dirname)
 
     def my_write_csv(dffunc, args, fname, **kwargs):
+        fname = f'{tables}/{fname}'
+        if (isfile(fname) and getsize(fname) > 0) and not overwrite:
+            print(f'{fname} exists, skipping.', file=stderr)
+            return
+        print(f'building {fname}...', file=stderr)
         try:
             df = dffunc(*args, **kwargs)
-            write_csv(df, fname, tables, overwrite=overwrite)
+            if '.gz' in fname:
+                df.to_csv(fname, compression='gzip')
+            else:
+                df.to_csv(fname)
         except Exception as exc:
             print(f'Function {dffunc} failed with args {args}\n{exc}', file=stderr)
 
+    def my_write_json(tbl, filename):
+        fname = f'{tables}/{filename}'
+        if (isfile(fname) and getsize(fname) > 0)  and not overwrite:
+            print(f'{fname} exists, skipping.', file=stderr)
+            return
+        print(f'building {fname}...', file=stderr)
+        with open(fname, 'w') as f:
+            f.write(dumps(tbl))
+
+            
     print('Making taxonomy tables...')
     my_write_csv(dff.taxonomy.kraken, (), 'minikraken.kraken_species_top100.csv', top_n=100)
     my_write_csv(dff.taxonomy.kraken, (), 'minikraken.kraken_species_1percent_cutoff.csv', cutoff=0.01)
-    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.krakenhll_species.csv')
+    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.krakenhll_species.csv', top_n=250)
     my_write_csv(dff.taxonomy.metaphlan2, (), 'metaphlan2_species.csv')
     my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_species.csv', rank='species')
     my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_genus.csv', rank='genus')
     my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_phylum.csv', rank='phylum')
 
     print('Making AMR tables...')
-    my_write_csv(dff.amr.mech, (), 'megares_amr_mech.csv')
-    my_write_csv(dff.amr.gene, (), 'megares_amr_gene.csv')
-    my_write_csv(dff.amr.classus, (), 'megares_amr_class.csv')
-    my_write_csv(dff.amr.group, (), 'megares_amr_group.csv')
+    my_write_csv(dff.amr.mech, (), 'megares_amr_mech_rpkm.csv')
+    my_write_csv(dff.amr.gene, (), 'megares_amr_gene_rpkm.csv')
+    my_write_csv(dff.amr.classus, (), 'megares_amr_class_rpkm.csv')
+    my_write_csv(dff.amr.group, (), 'megares_amr_group_rpkm.csv')
+
+    my_write_csv(dff.amr.mech, (), 'megares_amr_mech_rpkmg.csv', rpkmg=True)
+    my_write_csv(dff.amr.gene, (), 'megares_amr_gene_rpkmg.csv', rpkmg=True)
+    my_write_csv(dff.amr.classus, (), 'megares_amr_class_rpkmg.csv', rpkmg=True)
+    my_write_csv(dff.amr.group, (), 'megares_amr_group_rpkmg.csv', rpkmg=True)
+
     my_write_csv(dff.amr.card_rpkm, (), 'card_amr_rpkm.csv')
     my_write_csv(dff.amr.card_rpkmg, (), 'card_amr_rpkmg.csv')
 
@@ -78,14 +140,17 @@ def tables(overwrite, dirname, tables):
     my_write_csv(dff.ags.tbl, (), 'ags.csv')
 
     print('Making alpha diversity tables...')
-    my_write_csv(dff.alpha.shannon, (), 'alpha_diversity_shannon.csv')
-    my_write_csv(dff.alpha.chao1, (), 'alpha_diversity_chao1.csv')
-    my_write_csv(dff.alpha.richness, (), 'alpha_diversity_richness.csv')
+    my_write_csv(dff.alpha.shannon, (), 'alpha_diversity_shannon_kraken.csv')
+    my_write_csv(dff.alpha.chao1, (), 'alpha_diversity_chao1_kraken.csv')
+    my_write_csv(dff.alpha.richness, (), 'alpha_diversity_richness_kraken.csv')
+    my_write_csv(dff.alpha.shannon, (), 'alpha_diversity_shannon_mphlan2.csv', tool='metaphlan2')
+    my_write_csv(dff.alpha.chao1, (), 'alpha_diversity_chao1_mphlan2.csv', tool='metaphlan2')
+    my_write_csv(dff.alpha.richness, (), 'alpha_diversity_richness_mphlan2.csv', tool='metaphlan2')
 
     print('Making pathway tables...')
     my_write_csv(dff.pathways.pathways, (), 'pathways.csv')
-    my_write_csv(dff.pathways.rpkm, (), 'functional_genes_rpkm.csv')
-    my_write_csv(dff.pathways.rpkmg, (), 'functional_genes_rpkmg.csv()')
+    my_write_csv(dff.pathways.rpkm, (), 'functional_genes_rpkm.csv.gz')
+    my_write_csv(dff.pathways.rpkmg, (), 'functional_genes_rpkmg.csv.gz')
 
     print('Making virulence tables...')
     my_write_csv(dff.vir.rpkm, (), 'virulence_factors_rpkm.csv')
@@ -96,5 +161,6 @@ def tables(overwrite, dirname, tables):
     my_write_csv(dff.methyls.rpkmg, (), 'methyltransferases_rpkmg.csv')
 
     print('Making HMP tables...')
-    write_json(dff.hmp.raw(), tables + '/hmp_raw.json')
-    write_json(dff.hmp.dists(), tables + '/hmp_dists.json')
+    my_write_json(dff.hmp.raw(), 'hmp_raw.json')
+    my_write_json(dff.hmp.dists(), 'hmp_dists.json')
+    my_write_csv(dff.hmp.raw_table, (), 'hmp_raw.csv')

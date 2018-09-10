@@ -1,4 +1,3 @@
-
 from os.path import join, abspath, isfile
 from .sub_factories import *
 from pandas import DataFrame
@@ -25,6 +24,7 @@ class DataTableFactory:
         self.taxonomy = TaxonomyFactory(self)
         self.vir = VirulenceFactory(self)
         self.macrobes = MacrobeFactory(self)
+        self.readprops = ReadPropsFactory(self)
 
     def get_results(self, module=None, result=None):
         '''Return [(<sample-name>, <file-type>, <file-name>)] for rtype.'''
