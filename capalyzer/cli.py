@@ -39,9 +39,10 @@ def write_csv(df, filename, dirname, overwrite=False):
 
 @main.command()
 @click.option('--overwrite/--no-overwrite', default=False)
+@click.option('--pathways/--no-pathways', default=False)
 @click.argument('dirname')
 @click.argument('tables')
-def tables(overwrite, dirname, tables):
+def tables(overwrite, pathways, dirname, tables):
     """Make a bunch of tables."""
     mkdir(tables)
 
@@ -82,10 +83,11 @@ def tables(overwrite, dirname, tables):
     my_write_csv(dff.alpha.chao1, (), 'alpha_diversity_chao1.csv')
     my_write_csv(dff.alpha.richness, (), 'alpha_diversity_richness.csv')
 
-    print('Making pathway tables...')
-    my_write_csv(dff.pathways.pathways, (), 'pathways.csv')
-    my_write_csv(dff.pathways.rpkm, (), 'functional_genes_rpkm.csv')
-    my_write_csv(dff.pathways.rpkmg, (), 'functional_genes_rpkmg.csv()')
+    if pathways:
+        print('Making pathway tables...')
+        my_write_csv(dff.pathways.pathways, (), 'pathways.csv')
+        my_write_csv(dff.pathways.rpkm, (), 'functional_genes_rpkm.csv')
+        my_write_csv(dff.pathways.rpkmg, (), 'functional_genes_rpkmg.csv()')
 
     print('Making virulence tables...')
     my_write_csv(dff.vir.rpkm, (), 'virulence_factors_rpkm.csv')
