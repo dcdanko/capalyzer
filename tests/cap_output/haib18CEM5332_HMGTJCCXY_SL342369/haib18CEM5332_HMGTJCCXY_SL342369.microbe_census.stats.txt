@@ -1,0 +1,13 @@
+Parameters
+metagenome:	/athena/masonlab/scratch/projects/metagenomics/metasub/analysis/new_metasub_cap/.module_ultra/core_results/haib18CEM5332_HMGTJCCXY_SL342369/haib18CEM5332_HMGTJCCXY_SL342369.filter_human_dna.nonhuman_read1.fastq.gz,/athena/masonlab/scratch/projects/metagenomics/metasub/analysis/new_metasub_cap/.module_ultra/core_results/haib18CEM5332_HMGTJCCXY_SL342369/haib18CEM5332_HMGTJCCXY_SL342369.filter_human_dna.nonhuman_read2.fastq.gz
+reads_sampled:	842201
+trimmed_length:	150
+min_quality:	-5
+mean_quality:	-5
+filter_dups:	False
+max_unknown:	100
+
+Results
+average_genome_size:	6038430.90341
+total_bases:	202969477
+genome_equivalents:	33.6129501598

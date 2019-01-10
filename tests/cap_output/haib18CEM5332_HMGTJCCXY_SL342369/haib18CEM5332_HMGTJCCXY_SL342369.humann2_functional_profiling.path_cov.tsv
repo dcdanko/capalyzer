@@ -1,0 +1,48 @@
+# Pathway	haib18CEM5332_HMGTJCCXY_SL342369.humann2_functional_profiling.m8_Coverage
+UNMAPPED	1.0000000000
+UNINTEGRATED	1.0000000000
+UNINTEGRATED|unclassified	1.0000000000
+PWY-7220: adenosine deoxyribonucleotides de novo biosynthesis II	0.9604744644
+PWY-7220: adenosine deoxyribonucleotides de novo biosynthesis II|unclassified	0.9604744644
+PWY-7222: guanosine deoxyribonucleotides de novo biosynthesis II	0.9604744644
+PWY-7222: guanosine deoxyribonucleotides de novo biosynthesis II|unclassified	0.9604744644
+PWY-7111: pyruvate fermentation to isobutanol (engineered)	0.9246874604
+PWY-7111: pyruvate fermentation to isobutanol (engineered)|unclassified	0.9246874604
+VALSYN-PWY: L-valine biosynthesis	0.9246874604
+VALSYN-PWY: L-valine biosynthesis|unclassified	0.9246874604
+PWY-3781: aerobic respiration I (cytochrome c)	0.8879612627
+PWY-3781: aerobic respiration I (cytochrome c)|unclassified	0.8879612627
+PWY-7228: superpathway of guanosine nucleotides de novo biosynthesis I	0.6307693085
+PWY-7228: superpathway of guanosine nucleotides de novo biosynthesis I|unclassified	0.6307693085
+CALVIN-PWY: Calvin-Benson-Bassham cycle	0.7989420920
+CALVIN-PWY: Calvin-Benson-Bassham cycle|unclassified	0.7989420920
+PWY-7219: adenosine ribonucleotides de novo biosynthesis	0.5840715114
+PWY-7219: adenosine ribonucleotides de novo biosynthesis|unclassified	0.5840715114
+PWY-7221: guanosine ribonucleotides de novo biosynthesis	0.5368984808
+PWY-7221: guanosine ribonucleotides de novo biosynthesis|unclassified	0.5368984808
+PWY-6126: superpathway of adenosine nucleotides de novo biosynthesis II	0.5037234512
+PWY-6126: superpathway of adenosine nucleotides de novo biosynthesis II|unclassified	0.5037234512
+PWY-7229: superpathway of adenosine nucleotides de novo biosynthesis I	0.4674698025
+PWY-7229: superpathway of adenosine nucleotides de novo biosynthesis I|unclassified	0.4674698025
+PWY0-862: (5Z)-dodec-5-enoate biosynthesis	0.5135712649
+PWY0-862: (5Z)-dodec-5-enoate biosynthesis|unclassified	0.5135712649
+NONOXIPENT-PWY: pentose phosphate pathway (non-oxidative branch)	0.4613511600
+NONOXIPENT-PWY: pentose phosphate pathway (non-oxidative branch)|unclassified	0.4613511600
+HSERMETANA-PWY: L-methionine biosynthesis III	0.5012190161
+HSERMETANA-PWY: L-methionine biosynthesis III|unclassified	0.5012190161
+PWY-6151: S-adenosyl-L-methionine cycle I	0.4695900401
+PWY-6151: S-adenosyl-L-methionine cycle I|unclassified	0.4695900401
+PWY-7663: gondoate biosynthesis (anaerobic)	0.4280291311
+PWY-7663: gondoate biosynthesis (anaerobic)|unclassified	0.4280291311
+PWY-7664: oleate biosynthesis IV (anaerobic)	0.2433577436
+PWY-7664: oleate biosynthesis IV (anaerobic)|unclassified	0.2433577436
+FASYN-ELONG-PWY: fatty acid elongation -- saturated	0.2174277895
+FASYN-ELONG-PWY: fatty acid elongation -- saturated|unclassified	0.2174277895
+PWY-5188: tetrapyrrole biosynthesis I (from glutamate)	0.2304388056
+PWY-5188: tetrapyrrole biosynthesis I (from glutamate)|unclassified	0.2304388056
+HISDEG-PWY: L-histidine degradation I	0.2189988415
+HISDEG-PWY: L-histidine degradation I|unclassified	0.2189988415
+PWY-6609: adenine and adenosine salvage III	0.2529684193
+PWY-6609: adenine and adenosine salvage III|unclassified	0.2529684193
+PWY-6282: palmitoleate biosynthesis I (from (5Z)-dodec-5-enoate)	0.1834505834
+PWY-6282: palmitoleate biosynthesis I (from (5Z)-dodec-5-enoate)|unclassified	0.1834505834

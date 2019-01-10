@@ -1,0 +1,14 @@
+  0.01	4	4	U	0	unclassified
+  0.03	10	6	-	1	root
+  0.01	4	0	-	131567	  cellular organisms
+  0.01	4	2	D	2	    Bacteria
+  0.01	2	0	P	1224	      Proteobacteria
+  0.00	1	0	C	1236	        Gammaproteobacteria
+  0.00	1	0	O	91347	          Enterobacterales
+  0.00	1	0	F	1903409	            Erwiniaceae
+  0.00	1	0	G	32199	              Buchnera
+  0.00	1	1	S	9	                Buchnera aphidicola
+  0.00	1	0	C	28211	        Alphaproteobacteria
+  0.00	1	0	O	356	          Rhizobiales
+  0.00	1	0	F	335928	            Xanthobacteraceae
+  0.00	1	1	G	6	              Azorhizobium

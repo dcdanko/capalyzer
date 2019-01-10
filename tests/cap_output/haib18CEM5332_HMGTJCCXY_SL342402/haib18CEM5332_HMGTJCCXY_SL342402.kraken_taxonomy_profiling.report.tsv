@@ -1,0 +1,16 @@
+  0.01	2	2	U	0	unclassified
+  0.02	7	3	-	1	root
+  0.01	4	0	-	131567	  cellular organisms
+  0.01	4	1	D	2	    Bacteria
+  0.01	3	0	P	1224	      Proteobacteria
+  0.01	2	0	C	28211	        Alphaproteobacteria
+  0.01	2	0	O	356	          Rhizobiales
+  0.01	2	0	F	335928	            Xanthobacteraceae
+  0.01	2	0	G	6	              Azorhizobium
+  0.01	2	2	S	7	                Azorhizobium caulinodans
+  0.00	1	0	C	28216	        Betaproteobacteria
+  0.00	1	0	O	80840	          Burkholderiales
+  0.00	1	0	-	119065	            unclassified Burkholderiales
+  0.00	1	0	-	224471	              Burkholderiales Genera incertae sedis
+  0.00	1	0	G	88	                Leptothrix
+  0.00	1	1	S	89	                  Leptothrix discophora

@@ -1,0 +1,30 @@
+# Pathway	haib18CEM5332_HMGTJCCXY_SL342402.humann2_functional_profiling.m8_Coverage
+UNMAPPED	1.0000000000
+UNINTEGRATED	1.0000000000
+UNINTEGRATED|unclassified	1.0000000000
+PWY-3781: aerobic respiration I (cytochrome c)	0.9964345056
+PWY-3781: aerobic respiration I (cytochrome c)|unclassified	0.9964345056
+PWY-7220: adenosine deoxyribonucleotides de novo biosynthesis II	0.9410869462
+PWY-7220: adenosine deoxyribonucleotides de novo biosynthesis II|unclassified	0.9410869462
+PWY-7222: guanosine deoxyribonucleotides de novo biosynthesis II	0.9410869462
+PWY-7222: guanosine deoxyribonucleotides de novo biosynthesis II|unclassified	0.9410869462
+PWY-7111: pyruvate fermentation to isobutanol (engineered)	0.6092425764
+PWY-7111: pyruvate fermentation to isobutanol (engineered)|unclassified	0.6092425764
+VALSYN-PWY: L-valine biosynthesis	0.6092425764
+VALSYN-PWY: L-valine biosynthesis|unclassified	0.6092425764
+PWY-7663: gondoate biosynthesis (anaerobic)	0.3495462584
+PWY-7663: gondoate biosynthesis (anaerobic)|unclassified	0.3495462584
+GLYOXYLATE-BYPASS: glyoxylate cycle	0.1662433827
+GLYOXYLATE-BYPASS: glyoxylate cycle|unclassified	0.1662433827
+FASYN-ELONG-PWY: fatty acid elongation -- saturated	0.0452853073
+FASYN-ELONG-PWY: fatty acid elongation -- saturated|unclassified	0.0452853073
+PWYG-321: mycolate biosynthesis	0.0404486125
+PWYG-321: mycolate biosynthesis|unclassified	0.0404486125
+PWY-7664: oleate biosynthesis IV (anaerobic)	0.0402661086
+PWY-7664: oleate biosynthesis IV (anaerobic)|unclassified	0.0402661086
+PWY0-862: (5Z)-dodec-5-enoate biosynthesis	0.0350817289
+PWY0-862: (5Z)-dodec-5-enoate biosynthesis|unclassified	0.0350817289
+PWY-6282: palmitoleate biosynthesis I (from (5Z)-dodec-5-enoate)	0.0349055256
+PWY-6282: palmitoleate biosynthesis I (from (5Z)-dodec-5-enoate)|unclassified	0.0349055256
+PWY-7219: adenosine ribonucleotides de novo biosynthesis	0.0090937337
+PWY-7219: adenosine ribonucleotides de novo biosynthesis|unclassified	0.0090937337

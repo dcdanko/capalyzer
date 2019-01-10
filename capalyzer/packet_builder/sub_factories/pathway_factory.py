@@ -1,52 +1,25 @@
 from .subfactory import SubFactory
 from ..utils import parse_key_val_file
 from pandas import DataFrame
-from .constants import HUMANN2, HUMANN2_NORMALIZED
 
 
 class PathwayFactory(SubFactory):
 
-    def pathways(self, show_unmapped=False):
-        pathfs = self.factory.get_results(module=HUMANN2,
-                                          result='path_abunds')
+    def pathways(self, coverage=False, show_unmapped=False):
+        """Return a table of pathway abundances or coverages."""
+        def check_key(key):
+            """Return True if a key is not blacklisted."""
+            out = True
+            for black in [] if show_unmapped else ['UNMAPPED', 'UNINTEGRATED']:
+                out &= black in key
+            return out
 
-        def filter_keys(key):
-            if show_unmapped:
-                return True
-            blacklist = ['UNMAPPED', 'UNINTEGRATED']
-            for black in blacklist:
-                if black in key:
-                    return False
-            return True
-
-        def parse(fname):
-            return {k: v
-                    for k, v in parse_key_val_file(fname).items()
-                    if filter_keys(k)}
-
-        tbl = {sname: parse(fname)
-               for sname, fname in pathfs}
-
+        result = 'path_cov' if coverage else 'relab_path_abunds'
+        path_fs = self.factory.get_results(module='humann2_functional_profiling', result=result)
+        tbl = {
+            sname: {
+                k: v for k, v in parse_key_val_file(fname).items() if check_key(k)
+            } for sname, fname in path_fs
+        }
         tbl = DataFrame(tbl).fillna(0).transpose()
         return tbl
-
-    def rpkm(self):
-        rpkmfs = self.factory.get_results(
-            module=HUMANN2_NORMALIZED,
-            result='read_depth_norm_genes'
-        )
-        tbl = {sname: parse_key_val_file(fname)
-               for sname, fname in rpkmfs}
-        tbl = DataFrame(tbl).fillna(0).transpose()
-        return tbl
-
-    def rpkmg(self):
-        rpkmgfs = self.factory.get_results(
-            module=HUMANN2_NORMALIZED,
-            result='ags_norm_genes'
-        )
-        tbl = {sname: parse_key_val_file(fname)
-               for sname, fname in rpkmgfs}
-        tbl = DataFrame(tbl).fillna(0).transpose()
-        return tbl
-
