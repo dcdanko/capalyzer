@@ -1,2 +1,2 @@
 
-from .dataframes import DataFrameFactory
+from .dataframes import DataTableFactory

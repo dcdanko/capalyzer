@@ -1,5 +1,5 @@
 from .subfactory import SubFactory
-from capalyzer.utils import parse_key_val_file
+from ..utils import parse_key_val_file
 from pandas import DataFrame
 from .utils import parse_gene_table
 

@@ -1,27 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+import setuptools
 
-setup(
+setuptools
+setuptools.setup(
     name='capalyzer',
     version='2.0.0',
     description="Parsing functionality for the metasub CAP",
     author="David C. Danko",
     author_email='dcdanko@gmail.com',
     url='https://github.com/dcdanko/capalyzer',
-
-    packages=['capalyzer'],
+    packages=setuptools.find_packages(),
     package_dir={'capalyzer': 'capalyzer'},
-
     install_requires=[],
-
     entry_points={
         'console_scripts': [
             'capalyzer=capalyzer.cli:main'
         ]
     },
-
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',

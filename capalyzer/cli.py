@@ -1,7 +1,7 @@
 
 import click
 
-from .packet_builder.cli import tables
+from capalyzer.packet_builder.cli import tables
 
 
 @click.group()

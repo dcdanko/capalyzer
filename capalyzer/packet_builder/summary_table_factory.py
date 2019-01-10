@@ -16,14 +16,11 @@ class SummaryTableFactory:
         self.metadata = {}
         self._run_metadata_hooks(metadata_hooks)
 
-        self.alpha = AlphaDiversityFactory(self)
         self.amr = AMRFactory(self)
         self.ags = AGSFactory(self)
         self.hmp = HMPFactory(self)
-        self.methyls = MethylFactory(self)
         self.pathways = PathwayFactory(self)
         self.taxonomy = TaxonomyFactory(self)
-        self.vir = VirulenceFactory(self)
         self.macrobes = MacrobeFactory(self)
         self.readprops = ReadPropsFactory(self)
         self.microbe_directory = MicrobeDirectoryFactory(self)
