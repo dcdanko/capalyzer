@@ -48,6 +48,7 @@ from capalyzer.packet_parser import DataTableFactory
 table_factory = DataTableFactory(<data packet dir>)
 taxa_tbl = table_factory.taxonomy()
 amr_tbl = table_factory.amrs()
+hmp-tbl = table_factory.hmp()
 ```
 
 ## Credits
