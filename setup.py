@@ -13,7 +13,10 @@ setuptools.setup(
     url='https://github.com/dcdanko/capalyzer',
     packages=setuptools.find_packages(),
     package_dir={'capalyzer': 'capalyzer'},
-    install_requires=[],
+    install_requires=[
+        'click',
+        'pandas',
+    ],
     entry_points={
         'console_scripts': [
             'capalyzer=capalyzer.cli:main'
