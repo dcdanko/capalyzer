@@ -63,6 +63,7 @@ class TaxonomyFactory(SubFactory):
         taxafs = self.factory.get_results(module=mod_name,
                                           result=rname)
         taxafs = list(taxafs)
+
         def parse(fname):
             vec = {}
             tot = 0

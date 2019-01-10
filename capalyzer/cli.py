@@ -26,16 +26,49 @@ def macrobes(dirname):
 
 @main.command()
 @click.argument('dirname')
+def microbedir(dirname):
+    dff = DataTableFactory(dirname)
+    stdout.write(dff.microbe_directory.raw_table().to_csv())
+
+
+@main.command()
+@click.argument('dirname')
 def readprops(dirname):
     dff = DataTableFactory(dirname)
     stdout.write(dff.readprops.table().to_csv())
 
-    
+
+@main.command()
+@click.argument('prefix')
+@click.argument('dirname')
+def pathways(prefix, dirname):
+
+    dff = DataTableFactory(dirname)
+
+    def my_write_csv(dffunc, args, fname, **kwargs):
+        fname = f'{prefix}{fname}'
+        if (isfile(fname) and getsize(fname) > 0) and not overwrite:
+            print(f'{fname} exists, skipping.', file=stderr)
+            return
+        print(f'building {fname}...', file=stderr)
+        try:
+            df = dffunc(*args, **kwargs)
+            if '.gz' in fname:
+                df.to_csv(fname, compression='gzip')
+            else:
+                df.to_csv(fname)
+        except Exception as exc:
+            print(f'Function {dffunc} failed with args {args}\n{exc}', file=stderr)
+
+    my_write_csv(dff.pathways.pathways, (), 'pathways.csv')
+    my_write_csv(dff.pathways.rpkm, (), 'functional_genes_rpkm.csv')
+
+
 @main.command()
 @click.option('-n', '--topn', default=0)
 @click.option('-m', '--min-cutoff', default=0)
 @click.option('-r', '--rank',
-              type=click.Choice(['species', 'genus']),
+              type=click.Choice(['species', 'genus', 'phylum']),
               default='species')
 @click.option('-t', '--taxa',
               type=click.Choice(['all', 'bacteria', 'virus', 'eukaryote', 'fungi']),

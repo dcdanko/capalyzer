@@ -25,6 +25,7 @@ class DataTableFactory:
         self.vir = VirulenceFactory(self)
         self.macrobes = MacrobeFactory(self)
         self.readprops = ReadPropsFactory(self)
+        self.microbe_directory = MicrobeDirectoryFactory(self)
 
     def get_results(self, module=None, result=None):
         '''Return [(<sample-name>, <file-type>, <file-name>)] for rtype.'''
@@ -44,7 +45,7 @@ class DataTableFactory:
         return DataFrame(self.metadata).transpose()
 
     def _parse_core_dir(self, dirname):
-        files = [f for f in glob(dirname + '/**/*') if isfile(f)]
+        files = [f for f in glob(dirname + '/*/*') if isfile(f)]
         for fname in files:
             try:
                 sample, module, result = self._parse_core_file(fname)

@@ -8,3 +8,4 @@ from .taxonomy_factory import TaxonomyFactory
 from .virulence_factory import VirulenceFactory
 from .macrobes import MacrobeFactory
 from .read_proportions import ReadPropsFactory
+from .microbe_directory import MicrobeDirectoryFactory
