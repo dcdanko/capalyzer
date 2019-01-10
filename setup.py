@@ -6,7 +6,7 @@ import setuptools
 setuptools
 setuptools.setup(
     name='capalyzer',
-    version='2.1.0',
+    version='2.2.0',
     description="Parsing functionality for the metasub CAP",
     author="David C. Danko",
     author_email='dcdanko@gmail.com',

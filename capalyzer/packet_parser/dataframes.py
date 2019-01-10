@@ -35,6 +35,10 @@ class DataTableFactory:
     def __init__(self, packet_dir):
         self.packet_dir = packet_dir
 
+    def set_metadata(self, metadata_tbl):
+        """Set the internal metadata table which will be used to filter samples in tables."""
+        pass
+
     def csv_in_dir(self, fname, **kwargs):
         tbl = pd.read_csv(
             join(self.packet_dir, fname),
