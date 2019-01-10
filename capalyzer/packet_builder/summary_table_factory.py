@@ -1,10 +1,11 @@
-from os.path import join, abspath, isfile
+
+from os.path import abspath, isfile
 from .sub_factories import *
 from pandas import DataFrame
 from glob import glob
 
 
-class DataTableFactory:
+class SummaryTableFactory:
     '''A class that creates useful data tables from the MetaSUB CAP'''
 
     def __init__(self, dirname, metadata_hooks=[]):
