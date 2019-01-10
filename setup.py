@@ -16,6 +16,8 @@ setuptools.setup(
     install_requires=[
         'click',
         'pandas',
+        'scipy',
+        'numpy',
     ],
     entry_points={
         'console_scripts': [
