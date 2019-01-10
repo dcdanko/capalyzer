@@ -6,6 +6,27 @@ from sys import stdout, stderr
 from .summary_table_factory import SummaryTableFactory
 from json import dumps
 
+from ..constants import (
+    CARD_RPKM,
+    CARD_RPKMG,
+    MEGARES_CLASS_RPKM,
+    MEGARES_CLASS_RPKMG,
+    MEGARES_GENE_RPKM,
+    MEGARES_GENE_RPKMG,
+    MEGARES_GROUP_RPKM,
+    MEGARES_GROUP_RPKMG,
+    MEGARES_MECH_RPKM,
+    MEGARES_MECH_RPKMG,
+    AVE_GENOME_SIZE,
+    HMP_COMPARISON,
+    MACROBES,
+    READ_PROPORTIONS,
+    UNIREF90_COV,
+    UNIREF90_RELAB,
+    MPA_RELAB,
+    KRAKENHLL_REFSEQ,
+)
+
 
 def write_json(tbl, filename):
     with open(filename, 'w') as f:
@@ -116,6 +137,7 @@ def all_tables(overwrite, pathways, dirname, tables):
 
     def my_write_csv(dffunc, args, fname, **kwargs):
         fname = f'{tables}/{fname}'
+        makedirs(dirname(fname), exist_ok=True)
         if (isfile(fname) and getsize(fname) > 0) and not overwrite:
             print(f'{fname} exists, skipping.', file=stderr)
             return
@@ -129,71 +151,31 @@ def all_tables(overwrite, pathways, dirname, tables):
         except Exception as exc:
             print(f'Function {dffunc} failed with args {args}\n{exc}', file=stderr)
 
-    def my_write_json(tbl, filename):
-        fname = f'{tables}/{filename}'
-        if (isfile(fname) and getsize(fname) > 0) and not overwrite:
-            print(f'{fname} exists, skipping.', file=stderr)
-            return
-        print(f'building {fname}...', file=stderr)
-        with open(fname, 'w') as f:
-            f.write(dumps(tbl))
-
     print('Making taxonomy tables...')
-    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.krakenhll_species.csv', top_n=250)
-    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.bacteria.krakenhll_species.read_counts.csv',
-                 level='strict', top_taxa='bacteria', proportions=False)
-    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.virus.krakenhll_species.read_counts.csv',
-                 level='medium', top_taxa='virus', proportions=False)
-    my_write_csv(dff.taxonomy.krakenhll, (), 'refseq.fungi.krakenhll_species.read_counts.csv',
-                 level='strict', top_taxa='fungi', proportions=False)
-    my_write_csv(dff.taxonomy.metaphlan2, (), 'metaphlan2_species.csv')
-    my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_species.csv', rank='species')
-    my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_genus.csv', rank='genus')
-    my_write_csv(dff.taxonomy.bracken, (), 'minikraken.bracken_phylum.csv', rank='phylum')
+    my_write_csv(dff.taxonomy.krakenhll, (), KRAKENHLL_REFSEQ)
+    my_write_csv(dff.taxonomy.metaphlan2, (), MPA_RELAB)
 
     print('Making AMR tables...')
-    my_write_csv(dff.amr.mech, (), 'megares_amr_mech_rpkm.csv')
-    my_write_csv(dff.amr.gene, (), 'megares_amr_gene_rpkm.csv')
-    my_write_csv(dff.amr.classus, (), 'megares_amr_class_rpkm.csv')
-    my_write_csv(dff.amr.group, (), 'megares_amr_group_rpkm.csv')
+    my_write_csv(dff.amr.mech, (), MEGARES_MECH_RPKM)
+    my_write_csv(dff.amr.gene, (), MEGARES_GENE_RPKM)
+    my_write_csv(dff.amr.classus, (), MEGARES_CLASS_RPKM)
+    my_write_csv(dff.amr.group, (), MEGARES_GROUP_RPKM)
 
-    my_write_csv(dff.amr.mech, (), 'megares_amr_mech_rpkmg.csv', rpkmg=True)
-    my_write_csv(dff.amr.gene, (), 'megares_amr_gene_rpkmg.csv', rpkmg=True)
-    my_write_csv(dff.amr.classus, (), 'megares_amr_class_rpkmg.csv', rpkmg=True)
-    my_write_csv(dff.amr.group, (), 'megares_amr_group_rpkmg.csv', rpkmg=True)
+    my_write_csv(dff.amr.mech, (), MEGARES_MECH_RPKMG, rpkmg=True)
+    my_write_csv(dff.amr.gene, (), MEGARES_GENE_RPKMG, rpkmg=True)
+    my_write_csv(dff.amr.classus, (), MEGARES_CLASS_RPKMG, rpkmg=True)
+    my_write_csv(dff.amr.group, (), MEGARES_GROUP_RPKMG, rpkmg=True)
 
-    my_write_csv(dff.amr.card_rpkm, (), 'card_amr_rpkm.csv')
-    my_write_csv(dff.amr.card_rpkmg, (), 'card_amr_rpkmg.csv')
+    my_write_csv(dff.amr.card_rpkm, (), CARD_RPKM)
+    my_write_csv(dff.amr.card_rpkmg, (), CARD_RPKMG)
 
-    print('Making macrobe table...')
-    my_write_csv(dff.macrobes.table, (), 'macrobe_abundances.csv')
-
-    print('Making ags tables...')
-    my_write_csv(dff.ags.tbl, (), 'ags.csv')
-
-    print('Making alpha diversity tables...')
-    my_write_csv(dff.alpha.shannon, (), 'alpha_diversity_shannon_kraken.csv')
-    my_write_csv(dff.alpha.chao1, (), 'alpha_diversity_chao1_kraken.csv')
-    my_write_csv(dff.alpha.richness, (), 'alpha_diversity_richness_kraken.csv')
-    my_write_csv(dff.alpha.shannon, (), 'alpha_diversity_shannon_mphlan2.csv', tool='metaphlan2')
-    my_write_csv(dff.alpha.chao1, (), 'alpha_diversity_chao1_mphlan2.csv', tool='metaphlan2')
-    my_write_csv(dff.alpha.richness, (), 'alpha_diversity_richness_mphlan2.csv', tool='metaphlan2')
+    print('Making small tables...')
+    my_write_csv(dff.macrobes.table, (), MACROBES)
+    my_write_csv(dff.ags.tbl, (), AVE_GENOME_SIZE)
+    my_write_csv(dff.hmp.raw_table, (), HMP_COMPARISON)
 
     if pathways:
         print('Making pathway tables...')
         my_write_csv(dff.pathways.pathways, (), 'pathways.csv')
         my_write_csv(dff.pathways.rpkm, (), 'functional_genes_rpkm.csv')
         my_write_csv(dff.pathways.rpkmg, (), 'functional_genes_rpkmg.csv()')
-
-    print('Making virulence tables...')
-    my_write_csv(dff.vir.rpkm, (), 'virulence_factors_rpkm.csv')
-    my_write_csv(dff.vir.rpkmg, (), 'virulence_factors_rpkmg.csv')
-
-    print('Making methyltransferase tables...')
-    my_write_csv(dff.methyls.rpkm, (), 'methyltransferases_rpkm.csv')
-    my_write_csv(dff.methyls.rpkmg, (), 'methyltransferases_rpkmg.csv')
-
-    print('Making HMP tables...')
-    my_write_json(dff.hmp.raw(), 'hmp_raw.json')
-    my_write_json(dff.hmp.dists(), 'hmp_dists.json')
-    my_write_csv(dff.hmp.raw_table, (), 'hmp_raw.csv')
