@@ -11,7 +11,7 @@ class PathwayFactory(SubFactory):
             """Return True if a key is not blacklisted."""
             out = True
             for black in [] if show_unmapped else ['UNMAPPED', 'UNINTEGRATED']:
-                out &= black in key
+                out &= black not in key
             return out
 
         result = 'path_cov' if coverage else 'relab_path_abunds'
