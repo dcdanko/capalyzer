@@ -103,7 +103,7 @@ class DataTableFactory:
         """Return a table of HMP distances."""
         tbl = self.csv_in_dir(HMP_COMPARISON, metadata_filter=False, **kwargs)
         if self.metadata is not None:
-            tbl = tbl.loc[tbl['sample_name'] in self.metadata.index]
+            tbl = tbl.loc[tbl['sample_name'].isin(self.metadata.index)]
         return tbl
 
     def macrobes(self, **kwargs):
