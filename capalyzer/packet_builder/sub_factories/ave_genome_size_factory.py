@@ -1,5 +1,5 @@
 from .subfactory import SubFactory
-from pandas import Series
+from pandas import DataFrame
 
 
 def get_ags_from_file(fname):
@@ -18,5 +18,5 @@ class AGSFactory(SubFactory):
                                          result='stats')
         tbl = {sname: get_ags_from_file(fname)
                for sname, fname in agsfs}
-        tbl = Series(tbl)
+        tbl = DataFrame({'average_genome_size': tbl})
         return tbl
