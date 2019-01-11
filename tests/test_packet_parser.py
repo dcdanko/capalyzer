@@ -54,12 +54,14 @@ class TestPacketParser(TestCase):
     def test_taxa_alpha_div(self):
         """Test we can make alpha div vec."""
         table_factory = DataTableFactory(PACKET_DIR)
-        table_factory.taxa_alpha_diversity()
+        entropy = table_factory.taxa_alpha_diversity()
+        self.assertTrue((entropy > 0).all())
 
     def test_taxa_chao1(self):
         """Test we can make alpha div vec."""
         table_factory = DataTableFactory(PACKET_DIR)
-        table_factory.taxa_alpha_diversity(metric='chao1', rarefy=1000)
+        chao1 = table_factory.taxa_alpha_diversity(metric='chao1', rarefy=1000*1000)
+        self.assertTrue((chao1 > 0).all())
 
     def test_taxa_beta_div(self):
         """Test we can make beta div table."""

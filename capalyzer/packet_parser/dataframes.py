@@ -49,8 +49,8 @@ class DataTableFactory:
             header=0,
             index_col=0,
         )
-        if kwargs.get('fillna', None) is not None:
-            tbl = tbl.fillna(kwargs['fillna'])
+        if not kwargs.get('no_fill_na', False):
+            tbl = tbl.fillna(kwargs.get('fillna', 0))
         if kwargs.get('normalize', False):
             tbl = (tbl.T / tbl.T.sum()).T
         if self.metadata is not None and kwargs.get('metadata_filter', True):
@@ -124,11 +124,11 @@ class DataTableFactory:
         metric = kwargs.get('metric', 'shannon_entropy').lower()
         rarefy = kwargs.get('rarefy', 0)
         if metric == 'shannon_entropy':
-            return tbl.apply(shannon_entropy, rarefy=rarefy)
+            return tbl.apply(shannon_entropy, rarefy=rarefy, axis=1)
         elif metric == 'richness':
-            return tbl.apply(richness, rarefy=rarefy)
+            return tbl.apply(richness, rarefy=rarefy, axis=1)
         elif metric == 'chao1':
-            return tbl.apply(chao1, rarefy=rarefy)
+            return tbl.apply(chao1, rarefy=rarefy, axis=1)
 
     def taxa_beta_diversity(self, **kwargs):
         """Return a distance matrix between taxa."""

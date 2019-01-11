@@ -17,8 +17,9 @@ def shannon_entropy(row, rarefy=0):
     Shannon entropy is robust to rarefaction but we keep
     the param for consistency.
     """
-    H = 0
+    row_sum, H = sum(row), 0
     for val in row:
+        val = val / row_sum
         if val == 0:
             continue
         H += val * math.log2(val)

@@ -58,7 +58,7 @@ class TaxonomyFactory(SubFactory):
 
     def generic(
             self, mod_name,
-            top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=True, rname='mpa'
+            top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=False, rname='mpa'
     ):
         taxafs = self.factory.get_results(module=mod_name,
                                           result=rname)
@@ -84,7 +84,7 @@ class TaxonomyFactory(SubFactory):
         tbl = DataFrame(tbl).fillna(0).transpose()
         return tbl
 
-    def kraken(self, top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=True, level=None):
+    def kraken(self, top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=False, level=None):
         return self.generic(
             KRAKEN,
             top_n=top_n,
@@ -94,7 +94,7 @@ class TaxonomyFactory(SubFactory):
             proportions=proportions,
         )
 
-    def krakenhll(self, top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=True, level=None):
+    def krakenhll(self, top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=False, level=None):
         rname = 'report'
         if level:
             if 'm' in level:
