@@ -33,12 +33,15 @@ from ..constants import (
 
 class DataTableFactory:
 
-    def __init__(self, packet_dir):
+    def __init__(self, packet_dir, metadata_tbl=None):
         self.packet_dir = packet_dir
+        self.metadata = None
+        if metadata_tbl:
+            self.set_metadata(metadata_tbl)
 
     def set_metadata(self, metadata_tbl):
         """Set the internal metadata table which will be used to filter samples in tables."""
-        pass
+        self.metadata = metadata_tbl
 
     def csv_in_dir(self, fname, **kwargs):
         tbl = pd.read_csv(
@@ -50,6 +53,8 @@ class DataTableFactory:
             tbl = tbl.fillna(kwargs['fillna'])
         if kwargs.get('normalize', False):
             tbl = (tbl.T / tbl.T.sum()).T
+        if self.metadata and kwargs.get('metadata_filter', True):
+            tbl = tbl.loc[self.metadata.index]
         return tbl
 
     def taxonomy(self, **kwargs):
@@ -96,7 +101,8 @@ class DataTableFactory:
 
     def hmp(self, **kwargs):
         """Return a table of HMP distances."""
-        return self.csv_in_dir(HMP_COMPARISON, **kwargs)
+        tbl = self.csv_in_dir(HMP_COMPARISON, metadata_filter=False, **kwargs)
+        return tbl.loc[tbl['sample_name'] in self.metadata.index]
 
     def macrobes(self, **kwargs):
         """Return a table of macrobe abundances."""
