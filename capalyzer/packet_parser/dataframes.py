@@ -5,8 +5,9 @@ from scipy.spatial.distance import pdist, squareform
 from .diversity_metrics import (
     shannon_entropy,
     richness,
+    chao1,
     jensen_shannon_dist,
-    rho_proportionality
+    rho_proportionality,
 )
 from ..constants import (
     CARD_RPKM,
@@ -32,8 +33,15 @@ from ..constants import (
 
 class DataTableFactory:
 
-    def __init__(self, packet_dir):
+    def __init__(self, packet_dir, metadata_tbl=None):
         self.packet_dir = packet_dir
+        self.metadata = None
+        if metadata_tbl is not None:
+            self.set_metadata(metadata_tbl)
+
+    def set_metadata(self, metadata_tbl):
+        """Set the internal metadata table which will be used to filter samples in tables."""
+        self.metadata = metadata_tbl
 
     def csv_in_dir(self, fname, **kwargs):
         tbl = pd.read_csv(
@@ -45,6 +53,8 @@ class DataTableFactory:
             tbl = tbl.fillna(kwargs['fillna'])
         if kwargs.get('normalize', False):
             tbl = (tbl.T / tbl.T.sum()).T
+        if self.metadata is not None and kwargs.get('metadata_filter', True):
+            tbl = tbl.loc[self.metadata.index]
         return tbl
 
     def taxonomy(self, **kwargs):
@@ -91,7 +101,10 @@ class DataTableFactory:
 
     def hmp(self, **kwargs):
         """Return a table of HMP distances."""
-        return self.csv_in_dir(HMP_COMPARISON, **kwargs)
+        tbl = self.csv_in_dir(HMP_COMPARISON, metadata_filter=False, **kwargs)
+        if self.metadata is not None:
+            tbl = tbl.loc[tbl['sample_name'].isin(self.metadata.index)]
+        return tbl
 
     def macrobes(self, **kwargs):
         """Return a table of macrobe abundances."""
@@ -109,10 +122,13 @@ class DataTableFactory:
     def alpha_diversity(self, tbl, **kwargs):
         """Return generic alpha diversity table."""
         metric = kwargs.get('metric', 'shannon_entropy').lower()
+        rarefy = kwargs.get('rarefy', 0)
         if metric == 'shannon_entropy':
-            return tbl.apply(shannon_entropy)
+            return tbl.apply(shannon_entropy, rarefy=rarefy)
         elif metric == 'richness':
-            return tbl.apply(richness)
+            return tbl.apply(richness, rarefy=rarefy)
+        elif metric == 'chao1':
+            return tbl.apply(chao1, rarefy=rarefy)
 
     def taxa_beta_diversity(self, **kwargs):
         """Return a distance matrix between taxa."""
