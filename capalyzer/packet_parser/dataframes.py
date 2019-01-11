@@ -36,7 +36,7 @@ class DataTableFactory:
     def __init__(self, packet_dir, metadata_tbl=None):
         self.packet_dir = packet_dir
         self.metadata = None
-        if metadata_tbl:
+        if metadata_tbl is not None:
             self.set_metadata(metadata_tbl)
 
     def set_metadata(self, metadata_tbl):
