@@ -81,4 +81,4 @@ class TestPacketParser(TestCase):
         table_factory.set_metadata(metadata)
         hmp2 = table_factory.hmp()
 
-        self.assertEqual(hmp1.shape[0], hmp2.shape[0] // 2)
+        self.assertEqual(hmp1.shape[0] // 2, hmp2.shape[0])
