@@ -3,13 +3,20 @@ import math
 
 from scipy.stats import gmean, entropy
 from numpy.linalg import norm
+from random import random
+
 import numpy as np
+
+MIL = 1000 * 1000
 
 # ALPHA Diversity`
 
+def shannon_entropy(row, rarefy=0):
+    """Return the shannon entropy of an iterable.
 
-def shannon_entropy(row):
-    """Return the shannon entropy of an iterable."""
+    Shannon entropy is robust to rarefaction but we keep
+    the param for consistency.
+    """
     H = 0
     for val in row:
         if val == 0:
@@ -20,13 +27,37 @@ def shannon_entropy(row):
     return H
 
 
-def richness(row):
+def richness(row, rarefy=0):
     """Return the richness of an iterable."""
-    R = 0
+    row_sum, R = sum(row), 0
     for val in row:
-        if val > 0:
+        pi = val / row_sum
+        pr_no_detect = 1 - (1 - pi) ** rarefy
+        if val and (rarefy <= 0 or random() > pr_no_detect):
             R += 1
     return R
+
+
+def chao1(row, rarefy=0):
+    """Return richnes of an iterable"""
+    row_sum, R, S, D = sum(row), 0, 0, 0
+    num_reads = MIL if math.isclose(row_sum, 1) else row_sum  # default to 1M reads if compositional
+    num_reads = rarefy if rarefy > 0 else num_reads  # if rarefy is set use that as read count
+
+    for val in row:
+        pi = val / row_sum
+        pr_no_detect = 1 - (1 - pi) ** num_reads
+        pr_singleton = num_reads * pi * (1 - pi) ** (num_reads - 1)
+        pr_doublet = (num_reads * (num_reads - 1) / 2) * (pi ** 2) * ((1 - pi) ** num_reads - 2)
+
+        rand = random()
+        R += 1 if rand > pr_no_detect else 0
+        if pr_no_detect < rand < (pr_no_detect + pr_singleton):
+            S += 1
+        elif rand < (pr_no_detect + pr_singleton + pr_doublet):
+            D += 2
+    return R + (S ** 2 / D)
+
 
 
 # Beta Diversity

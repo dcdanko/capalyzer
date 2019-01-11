@@ -54,6 +54,11 @@ class TestPacketParser(TestCase):
         table_factory = DataTableFactory(PACKET_DIR)
         table_factory.taxa_alpha_diversity()
 
+    def test_taxa_chao1(self):
+        """Test we can make alpha div vec."""
+        table_factory = DataTableFactory(PACKET_DIR)
+        table_factory.taxa_alpha_diversity(metric='chao1', rarefy=1000)
+
     def test_taxa_beta_div(self):
         """Test we can make beta div table."""
         basic_test_runner(self, 'taxa_beta_diversity')

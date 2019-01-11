@@ -5,8 +5,9 @@ from scipy.spatial.distance import pdist, squareform
 from .diversity_metrics import (
     shannon_entropy,
     richness,
+    chao1,
     jensen_shannon_dist,
-    rho_proportionality
+    rho_proportionality,
 )
 from ..constants import (
     CARD_RPKM,
@@ -113,10 +114,13 @@ class DataTableFactory:
     def alpha_diversity(self, tbl, **kwargs):
         """Return generic alpha diversity table."""
         metric = kwargs.get('metric', 'shannon_entropy').lower()
+        rarefy = kwargs.get('rarefy', 0)
         if metric == 'shannon_entropy':
-            return tbl.apply(shannon_entropy)
+            return tbl.apply(shannon_entropy, rarefy=rarefy)
         elif metric == 'richness':
-            return tbl.apply(richness)
+            return tbl.apply(richness, rarefy=rarefy)
+        elif metric == 'chao1':
+            return tbl.apply(chao1, rarefy=rarefy)
 
     def taxa_beta_diversity(self, **kwargs):
         """Return a distance matrix between taxa."""
