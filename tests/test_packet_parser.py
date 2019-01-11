@@ -70,7 +70,7 @@ class TestPacketParser(TestCase):
         metadata = pd.DataFrame({'foo': {'haib18CEM5332_HMGTJCCXY_SL342402': 1}})
         table_factory = DataTableFactory(PACKET_DIR, metadata_tbl=metadata)
         tbl = table_factory.macrobes()
-        self.assertEqual(tbl.shape(), (1, 38))
+        self.assertEqual(tbl.shape, (1, 38))
 
     def test_metadata_filter_hmp(self):
         """Test that a basic table is metadata filtered."""
