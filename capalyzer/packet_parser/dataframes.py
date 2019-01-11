@@ -53,7 +53,7 @@ class DataTableFactory:
             tbl = tbl.fillna(kwargs['fillna'])
         if kwargs.get('normalize', False):
             tbl = (tbl.T / tbl.T.sum()).T
-        if self.metadata and kwargs.get('metadata_filter', True):
+        if self.metadata is not None and kwargs.get('metadata_filter', True):
             tbl = tbl.loc[self.metadata.index]
         return tbl
 
@@ -102,7 +102,9 @@ class DataTableFactory:
     def hmp(self, **kwargs):
         """Return a table of HMP distances."""
         tbl = self.csv_in_dir(HMP_COMPARISON, metadata_filter=False, **kwargs)
-        return tbl.loc[tbl['sample_name'] in self.metadata.index]
+        if self.metadata is not None:
+            tbl = tbl.loc[tbl['sample_name'] in self.metadata.index]
+        return tbl
 
     def macrobes(self, **kwargs):
         """Return a table of macrobe abundances."""
