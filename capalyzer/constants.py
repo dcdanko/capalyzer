@@ -26,3 +26,5 @@ UNIREF90_RELAB = join(PATHWAYS_DIR, 'uniref90.humann2.pathways_relab.csv')
 TAXA_DIR = 'taxonomy'
 MPA_RELAB = join(TAXA_DIR, 'metaphlan2.relabund.csv')
 KRAKENHLL_REFSEQ = join(TAXA_DIR, 'refseq.krakenhll_species.csv')
+KRAKENHLL_REFSEQ_MEDIUM = join(TAXA_DIR, 'refseq.krakenhll_species.medium.csv')
+KRAKENHLL_REFSEQ_STRICT = join(TAXA_DIR, 'refseq.krakenhll_species.strict.csv')
