@@ -40,7 +40,7 @@ def richness(row, rarefy=0):
 
 def chao1(row, rarefy=0):
     """Return richnes of an iterable"""
-    row_sum, R, S, D = sum(row), 0, 0, 0
+    row_sum, R, S, D = sum(row), 0, 0, 0.0000001
     num_reads = MIL if math.isclose(row_sum, 1) else row_sum  # default to 1M reads if compositional
     num_reads = rarefy if rarefy > 0 else num_reads  # if rarefy is set use that as read count
 
