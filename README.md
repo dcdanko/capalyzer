@@ -51,6 +51,25 @@ amr_tbl = table_factory.amrs()
 hmp-tbl = table_factory.hmp()
 ```
 
+### Getting diversity scores
+
+You can generate diversity metrics using this package.
+
+Available metrics
+- shannon entropy
+- richness
+- chao1 richness
+
+All metrics can be rarefied to a certain number of reads with the `rarefy` parameter. 
+```
+from capalyzer.packet_parser import DataTableFactory
+
+table_factory = DataTableFactory(<data packet dir>)
+
+krakenhll_richness = table_factory.taxa_alpha_diversity(metric='richness', rarefy=1000000)  # krakenhll is the default tool
+metaphlan2_entropy = table_factory.taxa_alpha_diversity(tool='metaphlan2')  # entropy is the default metric
+```
+
 ## Credits
 
 This package is written and maintained by [David C. Danko](mailto:dcdanko@gmail.com)
