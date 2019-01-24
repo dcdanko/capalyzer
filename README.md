@@ -53,7 +53,7 @@ hmp-tbl = table_factory.hmp()
 
 ### Getting diversity scores
 
-You can generate diversity metrics using this package.
+You can generate alpha diversity metrics using this package.
 
 Available metrics
 - shannon entropy
@@ -68,6 +68,18 @@ table_factory = DataTableFactory(<data packet dir>)
 
 krakenhll_richness = table_factory.taxa_alpha_diversity(metric='richness', rarefy=1000000)  # krakenhll is the default tool
 metaphlan2_entropy = table_factory.taxa_alpha_diversity(tool='metaphlan2')  # entropy is the default metric
+```
+
+Generally `krakenhll` is prefereable to `metaphlan2` as it captures more diversity.
+
+beta diversity scores are also supported
+```
+from capalyzer.packet_parser import DataTableFactory
+
+table_factory = DataTableFactory(<data packet dir>)
+
+jensen_shannon = table_factory.taxa_beta_diversity(metric='jsd')
+rho_proportionality = table_factory.taxa_beta_diversity(metric='rho')
 ```
 
 ## Credits
