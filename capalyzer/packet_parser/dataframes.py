@@ -53,7 +53,7 @@ class DataTableFactory:
 
     def copy(self, new_metadata=None):
         """Return a deep copy, with a new metadata table. if specified"""
-        if not new_metadata:
+        if new_metadata is None:
             new_metadata = self.metadata
         return DataTableFactory(self.packet_dir, metadata_tbl=new_metadata)
 
