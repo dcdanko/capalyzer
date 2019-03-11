@@ -4,7 +4,7 @@ import pandas as pd
 
 from scipy.stats import gmean, entropy
 from numpy.linalg import norm
-from random import random
+from random import random, sample
 
 import numpy as np
 
@@ -100,7 +100,7 @@ def single_rarefaction(tbl, n=0):
     Select n rows at random if specified.
     """
     if n and n > 0 and n < tbl.shape[0]:
-        tbl = tbl.loc[random.sample(list(tbl.index), n)]
+        tbl = tbl.loc[sample(list(tbl.index), n)]
     return sum(tbl.sum(axis=0) > 0)
 
 
@@ -116,5 +116,5 @@ def rarefaction_analysis(tbl, ns=[], nsample=16, include_all=True):
         ns = list(ns) + [tbl.shape[0]]
     for n in ns:
         for _ in range(nsample):
-            result.append(single_rarefaction(tbl, n=n))
+            result.append((n, single_rarefaction(tbl, n=n)))
     return pd.DataFrame(result, columns=['N', 'Taxa'])
