@@ -11,11 +11,11 @@ from capalyzer.packet_parser import DataTableFactory
 PACKET_DIR = join(dirname(__file__), 'built_packet')
 
 
-def basic_test_runner(tester, name):
+def basic_test_runner(tester, name, n=2):
     """Check that we can build a table."""
     table_factory = DataTableFactory(PACKET_DIR)
     tbl = getattr(table_factory, name)()
-    tester.assertEqual(tbl.shape[0], 2)
+    tester.assertEqual(tbl.shape[0], n)
 
 
 class TestPacketParser(TestCase):
@@ -27,7 +27,7 @@ class TestPacketParser(TestCase):
 
     def test_make_amr(self):
         """Test we can make AMR table."""
-        basic_test_runner(self, 'amrs')
+        basic_test_runner(self, 'amrs', n=0)
 
     def test_make_pathways(self):
         """Test we can make pathways table."""
@@ -72,7 +72,7 @@ class TestPacketParser(TestCase):
         metadata = pd.DataFrame({'foo': {'haib18CEM5332_HMGTJCCXY_SL342402': 1}})
         table_factory = DataTableFactory(PACKET_DIR, metadata_tbl=metadata)
         tbl = table_factory.macrobes()
-        self.assertEqual(tbl.shape, (1, 38))
+        self.assertEqual(tbl.shape, (1, 37))
 
     def test_metadata_filter_hmp(self):
         """Test that a basic table is metadata filtered."""

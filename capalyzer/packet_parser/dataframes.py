@@ -46,7 +46,9 @@ class DataTableFactory:
             try:
                 metadata_tbl = pd.read_csv(metadata_tbl, index_col=0)
             except FileNotFoundError:
-                metadata_tbl = self.csv_in_dir(metadata_tbl)
+                metadata_tbl = self.csv_in_dir(
+                    metadata_tbl, remove_zero_cols=False, remove_zero_rows=False
+                )
         self.metadata = metadata_tbl
 
     def copy(self, new_metadata=None):
@@ -66,7 +68,7 @@ class DataTableFactory:
         if not kwargs.get('no_fill_na', False):
             tbl = tbl.fillna(kwargs.get('fillna', 0))
         if kwargs.get('remove_zero_cols', True):
-            tbl = tbl.loc[:, tbl.sum(axis=0) > 0]
+            tbl = tbl.T.loc[tbl.sum(axis=0) > 0].T
         if kwargs.get('remove_zero_rows', True):
             tbl = tbl.loc[tbl.sum(axis=1) > 0]
         if kwargs.get('normalize', False):
@@ -118,7 +120,9 @@ class DataTableFactory:
 
     def hmp(self, **kwargs):
         """Return a table of HMP distances."""
-        tbl = self.csv_in_dir(HMP_COMPARISON, metadata_filter=False, **kwargs)
+        tbl = self.csv_in_dir(HMP_COMPARISON,
+                              metadata_filter=False, remove_zero_rows=False, remove_zero_cols=False,
+                              **kwargs)
         if self.metadata is not None:
             tbl = tbl.loc[tbl['sample_name'].isin(self.metadata.index)]
         return tbl

@@ -34,11 +34,14 @@ def richness(row, rarefy=0):
     """Return the richness of an iterable."""
     row_sum, R = sum(row), 0
     for val in row:
-        pi = val / row_sum
-        pr_no_detect = 1 - (1 - pi) ** rarefy
-        if val and (rarefy <= 0 or random() < pr_no_detect):
+        prob_success = val / row_sum
+        prob_fail = 1 - prob_success
+        prob_detect = 1 - (prob_fail ** rarefy)
+        if val and rarefy <= 0:
             R += 1
-    return R
+        else:
+            R += prob_detect
+    return int(R + 0.5)
 
 
 def chao1(row, rarefy=0):
@@ -48,19 +51,18 @@ def chao1(row, rarefy=0):
     num_reads = rarefy if rarefy > 0 else num_reads  # if rarefy is set use that as read count
 
     for val in row:
-        pi = val / row_sum
-        pr_no_detect = 1 - (1 - pi) ** num_reads
-        pr_singleton = num_reads * pi * (1 - pi) ** (num_reads - 1)
-        pr_doublet = (num_reads * (num_reads - 1) / 2) * (pi ** 2) * ((1 - pi) ** num_reads - 2)
+        prob_success = val / row_sum
+        prob_fail = 1 - prob_success
+        prob_detect = 1 - (prob_fail ** rarefy)
 
-        rand = random()
-        R += 1 if rand < pr_no_detect else 0
-        if pr_no_detect < rand < (pr_no_detect + pr_singleton):
-            S += 1
-        elif rand < (pr_no_detect + pr_singleton + pr_doublet):
-            D += 2
-    return R + (S ** 2 / D)
+        prob_singleton = num_reads * prob_success * (prob_fail ** (num_reads - 1))
+        prob_doublet = (num_reads * (num_reads - 1) / 2)
+        prob_doublet *= (prob_success ** 2) * (prob_fail ** (num_reads - 2))
 
+        R += prob_detect if rarefy else 1
+        S += prob_singleton
+        D += prob_doublet
+    return R + (S ** 2) / (2 * D)
 
 
 # Beta Diversity
