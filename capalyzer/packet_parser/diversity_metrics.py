@@ -113,9 +113,8 @@ def rarefaction_analysis(tbl, ns=[], nsample=16, include_all=True):
     if not ns:
         ns = range(tbl.shape[0])
     if include_all:
-        ns += tbl.shape[0]
+        ns = list(ns) + [tbl.shape[0]]
     for n in ns:
         for _ in range(nsample):
             result.append(single_rarefaction(tbl, n=n))
     return pd.DataFrame(result, columns=['N', 'Taxa'])
-
