@@ -49,12 +49,13 @@ class DataTableFactory:
             header=0,
             index_col=0,
         )
+        if self.metadata is not None and kwargs.get('metadata_filter', True):
+            tbl = tbl.loc[set(self.metadata.index) & set(tbl.index)]
         if not kwargs.get('no_fill_na', False):
             tbl = tbl.fillna(kwargs.get('fillna', 0))
         if kwargs.get('normalize', False):
             tbl = (tbl.T / tbl.T.sum()).T
-        if self.metadata is not None and kwargs.get('metadata_filter', True):
-            tbl = tbl.loc[self.metadata.index]
+
         return tbl
 
     def taxonomy(self, **kwargs):
