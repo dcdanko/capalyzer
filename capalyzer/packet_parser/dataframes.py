@@ -49,6 +49,12 @@ class DataTableFactory:
                 metadata_tbl = self.csv_in_dir(metadata_tbl)
         self.metadata = metadata_tbl
 
+    def copy(self, new_metadata=None):
+        """Return a deep copy, with a new metadata table. if specified"""
+        if not new_metadata:
+            new_metadata = self.metadata
+        return DataTableFactory(self.packet_dir, metadata_tbl=new_metadata)
+
     def csv_in_dir(self, fname, **kwargs):
         tbl = pd.read_csv(
             join(self.packet_dir, fname),
@@ -59,6 +65,10 @@ class DataTableFactory:
             tbl = tbl.loc[set(self.metadata.index) & set(tbl.index)]
         if not kwargs.get('no_fill_na', False):
             tbl = tbl.fillna(kwargs.get('fillna', 0))
+        if kwargs.get('remove_zero_cols', True):
+            tbl = tbl.loc[:, tbl.sum(axis=0) > 0]
+        if kwargs.get('remove_zero_rows', True):
+            tbl = tbl.loc[tbl.sum(axis=1) > 0]
         if kwargs.get('normalize', False):
             tbl = (tbl.T / tbl.T.sum()).T
 
