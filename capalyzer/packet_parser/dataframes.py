@@ -41,6 +41,11 @@ class DataTableFactory:
 
     def set_metadata(self, metadata_tbl):
         """Set the internal metadata table which will be used to filter samples in tables."""
+        if isinstance(metadata_tbl, str):
+            try:
+                metadata_tbl = pd.read_csv(metadata_tbl, index_col=0)
+            except FileNotFoundError:
+                metadata_tbl = self.csv_in_dir(metadata_tbl)
         self.metadata = metadata_tbl
 
     def csv_in_dir(self, fname, **kwargs):
