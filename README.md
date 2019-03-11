@@ -82,6 +82,12 @@ jensen_shannon = table_factory.taxa_beta_diversity(metric='jsd')
 rho_proportionality = table_factory.taxa_beta_diversity(metric='rho')
 ```
 
+Diversity metrics may also be generated using the CLI.
+```
+capalyzer diversity alpha --help
+capalyzer diversity beta --help
+```
+
 ## Credits
 
 This package is written and maintained by [David C. Danko](mailto:dcdanko@gmail.com)
