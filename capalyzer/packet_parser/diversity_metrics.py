@@ -11,6 +11,7 @@ MIL = 1000 * 1000
 
 # ALPHA Diversity`
 
+
 def shannon_entropy(row, rarefy=0):
     """Return the shannon entropy of an iterable.
 
@@ -34,7 +35,7 @@ def richness(row, rarefy=0):
     for val in row:
         pi = val / row_sum
         pr_no_detect = 1 - (1 - pi) ** rarefy
-        if val and (rarefy <= 0 or random() > pr_no_detect):
+        if val and (rarefy <= 0 or random() < pr_no_detect):
             R += 1
     return R
 
@@ -52,7 +53,7 @@ def chao1(row, rarefy=0):
         pr_doublet = (num_reads * (num_reads - 1) / 2) * (pi ** 2) * ((1 - pi) ** num_reads - 2)
 
         rand = random()
-        R += 1 if rand > pr_no_detect else 0
+        R += 1 if rand < pr_no_detect else 0
         if pr_no_detect < rand < (pr_no_detect + pr_singleton):
             S += 1
         elif rand < (pr_no_detect + pr_singleton + pr_doublet):
