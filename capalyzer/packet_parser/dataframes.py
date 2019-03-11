@@ -8,6 +8,7 @@ from .diversity_metrics import (
     chao1,
     jensen_shannon_dist,
     rho_proportionality,
+    rarefaction_analysis,
 )
 from ..constants import (
     CARD_RPKM,
@@ -125,6 +126,11 @@ class DataTableFactory:
         taxa = self.taxonomy(**kwargs)
         return self.alpha_diversity(taxa, **kwargs)
 
+    def amr_alpha_diversity(self, **kwargs):
+        """Return a Series of diversities."""
+        amr = self.amrs(**kwargs)
+        return self.alpha_diversity(amr, **kwargs)
+
     def alpha_diversity(self, tbl, **kwargs):
         """Return generic alpha diversity table."""
         metric = kwargs.get('metric', 'shannon_entropy').lower()
@@ -141,6 +147,11 @@ class DataTableFactory:
         taxa = self.taxonomy(**kwargs)
         return self.beta_diversity(taxa, **kwargs)
 
+    def amr_beta_diversity(self, **kwargs):
+        """Return a distance matrix between taxa."""
+        amr = self.amrs(**kwargs)
+        return self.beta_diversity(amr, **kwargs)
+
     def beta_diversity(self, tbl, **kwargs):
         """Return generic beta diversity table."""
         metric_name = kwargs.get('metric', 'jsd').lower()
@@ -151,3 +162,19 @@ class DataTableFactory:
         distm = squareform(pdist(tbl, metric))
         distm = pd.DataFrame(distm, index=tbl.index, columns=tbl.index)
         return distm
+
+    def taxa_rarefaction(self, **kwargs):
+        """Return a rarefaction analysis of taxa."""
+        taxa = self.taxonomy(**kwargs)
+        return self.rarefaction(taxa, **kwargs)
+
+    def amr_rarefaction(self, **kwargs):
+        """Return a rarefaction analysis of taxa."""
+        amr = self.amrs(**kwargs)
+        return self.rarefaction(amr, **kwargs)
+
+    def rarefaction(self, tbl, **kwargs):
+        ns = kwargs.get('ns', [])
+        nsample = kwargs.get('nsample', 16)
+        include_all = kwargs.get('include_all', True)
+        return rarefaction_analysis(tbl, ns=ns, nsample=nsample, include_all=include_all)

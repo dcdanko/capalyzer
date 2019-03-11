@@ -1,5 +1,6 @@
 
 import math
+import pandas as pd
 
 from scipy.stats import gmean, entropy
 from numpy.linalg import norm
@@ -87,3 +88,32 @@ def jensen_shannon_dist(P, Q):
     _M = 0.5 * (_P + _Q)
     J = 0.5 * (entropy(_P, _M) + entropy(_Q, _M))
     return math.sqrt(J)
+
+
+# Rarefaction
+
+def single_rarefaction(tbl, n=0):
+    """Return the number of nonzero columns in tbl.
+
+    Select n rows at random if specified.
+    """
+    if n and n > 0 and n < tbl.shape[0]:
+        tbl = tbl.loc[random.sample(list(tbl.index), n)]
+    return sum(tbl.sum(axis=0) > 0)
+
+
+def rarefaction_analysis(tbl, ns=[], nsample=16, include_all=True):
+    """Return a dataframe with two columns.
+
+    N, the number of samples and Taxa, the number of nonzero elements.
+    """
+    result = []
+    if not ns:
+        ns = range(tbl.shape[0])
+    if include_all:
+        ns += tbl.shape[0]
+    for n in ns:
+        for _ in range(nsample):
+            result.append(single_rarefaction(tbl, n=n))
+    return pd.DataFrame(result, columns=['N', 'Taxa'])
+
