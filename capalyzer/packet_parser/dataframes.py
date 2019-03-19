@@ -87,7 +87,7 @@ class DataTableFactory:
     def amrs(self, **kwargs):
         """Return an AMR table."""
         tool = kwargs.get('tool', 'megares').lower()
-        metric = kwargs.get('metric', 'rpkm').lower()
+        unit = kwargs.get('unit', 'rpkm').lower()
         if tool in ['megares']:
             kind = kwargs.get('kind', 'class').lower()
             return self.csv_in_dir({
@@ -99,7 +99,7 @@ class DataTableFactory:
                 ('rpkmg', 'gene'): MEGARES_GENE_RPKMG,
                 ('rpkmg', 'group'): MEGARES_GROUP_RPKMG,
                 ('rpkmg', 'mech'): MEGARES_MECH_RPKMG,
-            }[(metric, kind)], **kwargs)
+            }[(unit, kind)], **kwargs)
         elif tool in ['card']:
             return self.csv_in_dir({
                 'rpkm': CARD_RPKM,
@@ -168,10 +168,10 @@ class DataTableFactory:
 
     def beta_diversity(self, tbl, **kwargs):
         """Return generic beta diversity table."""
-        metric_name = kwargs.get('metric', 'jsd').lower()
-        if metric_name == 'jsd':
+        metric = kwargs.get('metric', 'jsd').lower()
+        if metric == 'jsd':
             metric = jensen_shannon_dist
-        elif metric_name == 'rho':
+        elif metric == 'rho':
             metric = rho_proportionality
         distm = squareform(pdist(tbl, metric))
         distm = pd.DataFrame(distm, index=tbl.index, columns=tbl.index)
