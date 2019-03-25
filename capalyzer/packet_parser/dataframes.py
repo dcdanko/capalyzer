@@ -10,6 +10,7 @@ from .diversity_metrics import (
     rho_proportionality,
     rarefaction_analysis,
 )
+from .longform_parser import parse_longform_taxa
 from ..constants import (
     CARD_RPKM,
     CARD_RPKMG,
@@ -29,6 +30,9 @@ from ..constants import (
     UNIREF90_RELAB,
     MPA_RELAB,
     KRAKENHLL_REFSEQ,
+    KRAKENHLL_REFSEQ_MEDIUM,
+    KRAKENHLL_REFSEQ_STRICT,
+    KRAKENHLL_REFSEQ_LONG,
 )
 
 
@@ -79,10 +83,26 @@ class DataTableFactory:
     def taxonomy(self, **kwargs):
         """Return a taxonomy table."""
         tool = kwargs.get('tool', 'krakenhll').lower()
-        if tool in ['krakenhll', 'krakenuniq']:
-            return self.csv_in_dir(KRAKENHLL_REFSEQ, **kwargs)
-        elif tool in ['metaphlan2']:
+        if tool in ['metaphlan2']:
             return self.csv_in_dir(MPA_RELAB, **kwargs)
+
+        if tool in ['krakenhll', 'krakenuniq']:
+            strict = kwargs.get('strict', 'permissive')
+            rank = kwargs.get('rank', 'species')
+            if rank == 'species' and not isinstance(strict, int):
+                fname = KRAKENHLL_REFSEQ
+                if strict.lower() == 'strict':
+                    fname = KRAKENHLL_REFSEQ_STRICT
+                elif strict.lower() == 'medium':
+                    fname = KRAKENHLL_REFSEQ_MEDIUM
+                return self.csv_in_dir(fname, **kwargs)
+            else:
+                if isinstance(strict, str):
+                    strict = {'strict': 512, 'medium': 256, 'permissive': 4}[strict]
+                return parse_longform_taxa(join(
+                    self.packet_dir, KRAKENHLL_REFSEQ_LONG),
+                    strict=strict, rank=rank
+                )
 
     def amrs(self, **kwargs):
         """Return an AMR table."""

@@ -11,10 +11,10 @@ from capalyzer.packet_parser import DataTableFactory
 PACKET_DIR = join(dirname(__file__), 'built_packet')
 
 
-def basic_test_runner(tester, name, n=2):
+def basic_test_runner(tester, name, n=2, **kwargs):
     """Check that we can build a table."""
     table_factory = DataTableFactory(PACKET_DIR)
-    tbl = getattr(table_factory, name)()
+    tbl = getattr(table_factory, name)(**kwargs)
     tester.assertEqual(tbl.shape[0], n)
 
 
@@ -24,6 +24,10 @@ class TestPacketParser(TestCase):
     def test_make_taxonomy(self):
         """Test that we can build a taxonomy table."""
         basic_test_runner(self, 'taxonomy')
+
+    def test_make_taxa_long(self):
+        """Test that we can build a taxonomy table from longform."""
+        basic_test_runner(self, 'taxonomy', rank='all')
 
     def test_make_amr(self):
         """Test we can make AMR table."""
