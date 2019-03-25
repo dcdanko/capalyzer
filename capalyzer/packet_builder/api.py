@@ -24,6 +24,7 @@ from ..constants import (
     KRAKENHLL_REFSEQ,
     KRAKENHLL_REFSEQ_MEDIUM,
     KRAKENHLL_REFSEQ_STRICT,
+    KRAKENHLL_REFSEQ_LONG,
 )
 
 
@@ -51,6 +52,7 @@ def make_all_tables(dirname, tables, overwrite=False):
     yield my_write_csv(dff.taxonomy.krakenhll, KRAKENHLL_REFSEQ)
     yield my_write_csv(dff.taxonomy.krakenhll, KRAKENHLL_REFSEQ_STRICT, level='strict')
     yield my_write_csv(dff.taxonomy.krakenhll, KRAKENHLL_REFSEQ_MEDIUM, level='medium')
+    yield my_write_csv(dff.taxonomy.krakenhll_long, KRAKENHLL_REFSEQ_LONG)
     yield my_write_csv(dff.taxonomy.metaphlan2, MPA_RELAB)
 
     yield my_write_csv(dff.amr.mech, MEGARES_MECH_RPKM)

@@ -7,6 +7,8 @@ from .constants import (
     KRAKENHLL,
     METAPHLAN2,
 )
+from .toxonomy_long_form import longform_taxa
+
 
 def get_top_n(vec, n):
     if n <= 0:
@@ -48,8 +50,8 @@ def is_top_taxa(key, top_taxa):
     elif top_taxa == 'eukaryote' and 'eukaryote' in tkns[0]:
         return True
     return False
-    
-        
+
+
 def clean_taxa(taxa):
     return taxa.split('|')[-1].split('__')[-1]
 
@@ -101,7 +103,7 @@ class TaxonomyFactory(SubFactory):
                 rname = 'report_medium'
             elif 's' in level:
                 rname = 'report_strict'
-                
+
         return self.generic(
             KRAKENHLL,
             top_n=top_n,
@@ -111,6 +113,10 @@ class TaxonomyFactory(SubFactory):
             proportions=proportions,
             rname=rname,
         )
+
+    def krakenhll_long(self):
+        taxafs = self.factory.get_results(module=KRAKENHLL, result='read_assignments')
+        return longform_taxa(taxafs)
 
     def metaphlan2(self, top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=True, level=None):
         return self.generic(
