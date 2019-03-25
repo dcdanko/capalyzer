@@ -3,7 +3,7 @@ import gzip
 import csv
 
 
-def parse_longform_taxa(filename, rank='all', strict=512):
+def parse_longform_taxa(filename, rank='all', strict=512, exclude_ranks=['assembly', 'sequence']):
     """Return a pandas dataframe."""
     tbl = {}
     with gzip.open(filename, 'r') as longform:
@@ -16,9 +16,11 @@ def parse_longform_taxa(filename, rank='all', strict=512):
             except ValueError:
                 print(line)
                 raise
-            if rank and rank != 'all' and  rank != taxa_rank:
+            if rank and rank != 'all' and rank != taxa_rank:
                 continue
             if strict and nkmers < strict:
+                continue
+            if taxa_rank in exclude_ranks:
                 continue
             sample_tbl = tbl.get(sample_name, {})
             sample_tbl[taxa_name] = nreads

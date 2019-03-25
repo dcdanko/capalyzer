@@ -99,9 +99,10 @@ class DataTableFactory:
             else:
                 if isinstance(strict, str):
                     strict = {'strict': 512, 'medium': 256, 'permissive': 4}[strict]
+                exclude = kwargs.get('exclude_ranks', ['assembly', 'sequence'])
                 return parse_longform_taxa(join(
                     self.packet_dir, KRAKENHLL_REFSEQ_LONG),
-                    strict=strict, rank=rank
+                    strict=strict, rank=rank, exclude_ranks=exclude
                 )
 
     def amrs(self, **kwargs):
