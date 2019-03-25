@@ -23,4 +23,4 @@ def parse_longform_taxa(filename, rank='all', strict=512):
             sample_tbl = tbl.get(sample_name, {})
             sample_tbl[taxa_name] = nreads
             tbl[sample_name] = sample_tbl
-    return pd.DataFrame.from_dict(tbl, orient='index')
+    return pd.DataFrame.from_dict(tbl, orient='index').fillna(0)

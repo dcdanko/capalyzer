@@ -158,6 +158,7 @@ class DataTableFactory:
     def taxa_alpha_diversity(self, **kwargs):
         """Return a Series of diversities."""
         taxa = self.taxonomy(**kwargs)
+        print(taxa)
         return self.alpha_diversity(taxa, **kwargs)
 
     def amr_alpha_diversity(self, **kwargs):

@@ -61,6 +61,12 @@ class TestPacketParser(TestCase):
         entropy = table_factory.taxa_alpha_diversity()
         self.assertTrue((entropy > 0).all())
 
+    def test_taxa_alpha_div_genus(self):
+        """Test we can make alpha div vec."""
+        table_factory = DataTableFactory(PACKET_DIR)
+        entropy = table_factory.taxa_alpha_diversity(rank='genus')
+        self.assertTrue((entropy > 0).all())
+
     def test_taxa_chao1(self):
         """Test we can make alpha div vec."""
         table_factory = DataTableFactory(PACKET_DIR)
