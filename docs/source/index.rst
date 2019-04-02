@@ -10,7 +10,7 @@ Welcome to Capalyzer!
    :maxdepth: 2
    :caption: Contents:
 
-Capalyzer is a python package to summarize and parse metagenomic data. Capalyzer takes output from the MetaSUB Core Analysis Pipeline and builds summary data tables. After the data tables have been built capalyzer includes utilities to parse those tables.
+Capalyzer is a python package to summarize and parse metagenomic data. Capalyzer takes output from the `MetaSUB Core Analysis Pipeline <https://github.com/MetaSUB/MetaSUB_CAP>`_ and builds summary data tables. After the data tables have been built capalyzer includes utilities to parse those tables.
 
 Capalyzer aims to remove boilerplate code from metagenomic analyses and provide a consistent interface for secondary analyses. Capalyzer is a comkunity project and is easy to contribute to.
 
@@ -37,6 +37,19 @@ What does it look like?
 You can get the library directly from PyPI::
 
     pip install capalyzer
+
+
+Documentation
+-------------
+
+This part of the documentation guides you through all of the library's
+usage patterns.
+
+.. toctree::
+   :maxdepth: 2
+
+   build_packet
+   parse_packet
 
 API Reference
 -------------
