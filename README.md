@@ -1,10 +1,12 @@
 # Capalyzer
 
 [![CircleCI](https://circleci.com/gh/dcdanko/capalyzer.svg?style=svg)](https://circleci.com/gh/dcdanko/capalyzer)
-
 [![](https://img.shields.io/pypi/v/capalyzer.svg)](https://pypi.org/project/capalyzer/)
+[![Documentation Status](https://readthedocs.org/projects/capalyzer/badge/?version=latest)](https://capalyzer.readthedocs.io/en/latest/?badge=latest)
 
 CAPalyzer provides two utilities connected to the [MetaSUB Core Analysis Pipeline](https://github.com/MetaSUB/MetaSUB_CAP). It condenses the results of the CAP into summary data tables and it provides utilities to parse those tables.
+
+[Read The Docs](https://capalyzer.readthedocs.io/en/latest/)
 
 ## Installation
 
