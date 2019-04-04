@@ -105,6 +105,19 @@ class DataTableFactory:
                     strict=strict, rank=rank, exclude_ranks=exclude
                 )
 
+    def core_taxa(self, core_thresh=0.9, pan_thresh=0.2, zero_thresh=0, **kwargs):
+        """Return a pandas dataframe grouping taxa into core, pan, and peripheral."""
+        taxa = self.taxonomy(**kwargs)
+        prev = (taxa > zero_thresh).sum(axis=0) / taxa.shape[0]
+
+        def pan(val):
+            if val > core_thresh:
+                return 'core'
+            elif val > pan_thresh:
+                return 'pan'
+            return 'peripheral'
+        return prev.apply(pan)
+
     def amrs(self, **kwargs):
         """Return an AMR table."""
         tool = kwargs.get('tool', 'megares').lower()

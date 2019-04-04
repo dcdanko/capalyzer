@@ -15,7 +15,8 @@ def basic_test_runner(tester, name, n=2, **kwargs):
     """Check that we can build a table."""
     table_factory = DataTableFactory(PACKET_DIR)
     tbl = getattr(table_factory, name)(**kwargs)
-    tester.assertEqual(tbl.shape[0], n)
+    if n >= 0:
+        tester.assertEqual(tbl.shape[0], n)
 
 
 class TestPacketParser(TestCase):
@@ -24,6 +25,10 @@ class TestPacketParser(TestCase):
     def test_make_taxonomy(self):
         """Test that we can build a taxonomy table."""
         basic_test_runner(self, 'taxonomy')
+
+    def test_make_core_taxa(self):
+        """Test that we can build a taxonomy table."""
+        basic_test_runner(self, 'core_taxa', n=-1)
 
     def test_make_taxa_long(self):
         """Test that we can build a taxonomy table from longform."""
