@@ -6,11 +6,7 @@ import setuptools
 setuptools
 setuptools.setup(
     name='capalyzer',
-<<<<<<< HEAD
-    version='2.7.0',
-=======
-    version='2.6.0',
->>>>>>> 09eb04bc43ce473df38b02ec5141dd202ec90062
+    version='2.7.1',
     description="Parsing functionality for the metasub CAP",
     author="David C. Danko",
     author_email='dcdanko@gmail.com',
@@ -34,4 +30,5 @@ setuptools.setup(
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
     ],
+    package_data={'capalyzer': ['packet_parser/ncbi_tree/*.dmp.gz']},
 )
