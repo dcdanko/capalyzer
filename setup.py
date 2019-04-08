@@ -6,7 +6,7 @@ import setuptools
 setuptools
 setuptools.setup(
     name='capalyzer',
-    version='2.7.1',
+    version='2.8.0',
     description="Parsing functionality for the metasub CAP",
     author="David C. Danko",
     author_email='dcdanko@gmail.com',
@@ -18,6 +18,7 @@ setuptools.setup(
         'pandas',
         'scipy',
         'numpy',
+        'umap-learn',
     ],
     entry_points={
         'console_scripts': [
