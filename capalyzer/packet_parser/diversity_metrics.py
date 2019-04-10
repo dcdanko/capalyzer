@@ -53,15 +53,14 @@ def chao1(row, rarefy=0):
     for val in row:
         prob_success = val / row_sum
         prob_fail = 1 - prob_success
-        prob_detect = 1 - (prob_fail ** rarefy)
+        prob_detect = 1 - (prob_fail ** num_reads)
 
-        prob_singleton = num_reads * prob_success * (prob_fail ** (num_reads - 1))
-        prob_doublet = (num_reads * (num_reads - 1) / 2)
-        prob_doublet *= (prob_success ** 2) * (prob_fail ** (num_reads - 2))
-
-        R += prob_detect if rarefy else 1
-        S += prob_singleton
-        D += prob_doublet
+        if rarefy:
+            R += prob_detect
+        elif val:
+            R += 1
+        S += 1 if val == 1 else 0
+        D += 1 if val == 2 else 0
     return R + (S ** 2) / (2 * D)
 
 
