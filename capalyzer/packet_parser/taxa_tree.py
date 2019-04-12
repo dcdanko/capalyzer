@@ -37,14 +37,22 @@ class NCBITaxaTree:
         """Return the name of the parent taxon."""
         return self._name(self.parent_map[self._node(taxon)])
 
-    def phyla(self, taxon):
-        """Return the phyla for the given taxon."""
+    def ancestor_rank(self, rank, taxon):
+        """Return the ancestor of taxon at the given rank."""
         parent_num = self.parent_map[self._node(taxon)]
         while parent_num:
-            if 'phylum' == self.nodes_to_name[parent_num]['rank']:
+            if rank == self.nodes_to_name[parent_num]['rank']:
                 return self.nodes_to_name[parent_num]['name']
             parent_num = self.parent_map[parent_num]
-        raise KeyError(f'Phyla for taxa {taxon} not found.')
+        raise KeyError(f'{rank} for taxa {taxon} not found.')
+
+    def phyla(self, taxon):
+        """Return the phyla for the given taxon."""
+        return self.ancestor_rank('phylum', taxon)
+
+    def genus(self, taxon):
+        """Return the phyla for the given taxon."""
+        return self.ancestor_rank('genus', taxon)
 
     def _tree(self, taxa):
         queue, tree = {self._node(el) for el in taxa}, {}
