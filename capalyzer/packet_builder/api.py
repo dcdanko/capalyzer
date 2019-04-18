@@ -2,6 +2,7 @@
 from os import makedirs
 from os.path import isfile, getsize, dirname, join
 from .summary_table_factory import SummaryTableFactory
+import warnings
 
 from ..constants import (
     CARD_RPKM,
@@ -34,6 +35,8 @@ def write_csv(df_func, fname, overwrite=False, **kwargs):
     if (isfile(fname) and getsize(fname) > 0) and not overwrite:
         raise FileExistsError(f'{fname} exists, set overwrite to True to overwrite.')
     df = df_func(**kwargs)
+    if sum(df.shape) == 0:
+        warnings.warn(f'Table {fname} is empty.')
     if '.gz' in fname:
         df.to_csv(fname, compression='gzip')
     else:

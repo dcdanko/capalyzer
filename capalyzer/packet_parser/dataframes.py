@@ -140,13 +140,17 @@ class DataTableFactory:
                 'rpkmg': CARD_RPKMG,
             }[tool], **kwargs)
 
-    def pathways(self, **kwargs):
+    def pathways(self, coverage_min=0, **kwargs):
         """Return a table of pathways."""
-        kind = kwargs.get('kind', 'relab').lower()
-        return self.csv_in_dir({
+        kind = {
             'relab': UNIREF90_RELAB,
             'cov': UNIREF90_COV,
-        }[kind], **kwargs)
+        }[kwargs.get('kind', 'relab').lower()]
+        tbl = self.csv_in_dir(kind, **kwargs)
+        if coverage_min > 0:
+            cov_tbl = self.csv_in_dir(UNIREF90_COV, **kwargs)
+            tbl.mask(cov_tbl > coverage_min, other=kwargs.get('other', None))
+        return tbl
 
     def ags(self, **kwargs):
         """Return a Series of Ave Genome Size estimates."""

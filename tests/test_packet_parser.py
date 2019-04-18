@@ -42,6 +42,10 @@ class TestPacketParser(TestCase):
         """Test we can make pathways table."""
         basic_test_runner(self, 'pathways')
 
+    def test_make_pathways_with_coverage_min(self):
+        """Test we can make pathways table."""
+        basic_test_runner(self, 'pathways', coverage_min=0.5)
+
     def test_make_ags(self):
         """Test we can make AGS vec."""
         table_factory = DataTableFactory(PACKET_DIR)
