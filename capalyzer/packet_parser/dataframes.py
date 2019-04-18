@@ -67,6 +67,9 @@ class DataTableFactory:
             header=0,
             index_col=0,
         )
+        return self.filter_dataframe(tbl, **kwargs)
+
+    def filter_dataframe(self, tbl, **kwargs):
         if self.metadata is not None and kwargs.get('metadata_filter', True):
             tbl = tbl.loc[set(self.metadata.index) & set(tbl.index)]
         if not kwargs.get('no_fill_na', False):
@@ -149,7 +152,8 @@ class DataTableFactory:
         tbl = self.csv_in_dir(kind, **kwargs)
         if coverage_min > 0:
             cov_tbl = self.csv_in_dir(UNIREF90_COV, **kwargs)
-            tbl.mask(cov_tbl > coverage_min, other=kwargs.get('other', None))
+            tbl = tbl.mask(cov_tbl > coverage_min, other=kwargs.get('other', None))
+            tbl = self.filter_dataframe(tbl, **kwargs)
         return tbl
 
     def ags(self, **kwargs):
