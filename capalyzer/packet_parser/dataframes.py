@@ -152,7 +152,7 @@ class DataTableFactory:
         tbl = self.csv_in_dir(kind, **kwargs)
         if coverage_min > 0:
             cov_tbl = self.csv_in_dir(UNIREF90_COV, **kwargs)
-            tbl = tbl.mask(cov_tbl > coverage_min, other=kwargs.get('other', None))
+            tbl = tbl.mask(cov_tbl < coverage_min, other=kwargs.get('other', None))
             tbl = self.filter_dataframe(tbl, **kwargs)
         return tbl
 
