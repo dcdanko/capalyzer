@@ -18,6 +18,7 @@ AVE_GENOME_SIZE = join(OTHER_DIR, 'average_genome_size.csv')
 HMP_COMPARISON = join(OTHER_DIR, 'human_microbiome_project_comparison.csv')
 MACROBES = join(OTHER_DIR, 'macrobe_abundances.csv')
 READ_PROPORTIONS = join(OTHER_DIR, 'read_classification_proportions.csv')
+READ_STATS = join(OTHER_DIR, 'read_stats.csv')
 
 PATHWAYS_DIR = 'pathways'
 UNIREF90_COV = join(PATHWAYS_DIR, 'uniref90.humann2.pathways_coverage.csv')

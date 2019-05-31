@@ -23,6 +23,7 @@ class SummaryTableFactory:
         self.taxonomy = TaxonomyFactory(self)
         self.macrobes = MacrobeFactory(self)
         self.readprops = ReadPropsFactory(self)
+        self.readstats = ReadStatsFactory(self)
         self.microbe_directory = MicrobeDirectoryFactory(self)
 
     def get_results(self, module=None, result=None):

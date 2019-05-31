@@ -1,7 +1,7 @@
 
 import click
 
-from capalyzer.packet_builder.cli import all_tables
+from capalyzer.packet_builder.cli import all_tables, cli_make_read_stats
 from capalyzer.packet_parser.cli import diversity
 
 
@@ -11,6 +11,7 @@ def main():
 
 
 main.add_command(all_tables)
+main.add_command(cli_make_read_stats)
 main.add_command(diversity)
 
 

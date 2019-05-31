@@ -1,5 +1,6 @@
 from .subfactory import SubFactory
 from ..utils import parse_key_val_file
+import pandas as pd
 from pandas import DataFrame
 from .constants import (
     BRACKEN,
@@ -86,6 +87,31 @@ class TaxonomyFactory(SubFactory):
         tbl = DataFrame(tbl).fillna(0).transpose()
         return tbl
 
+    def parse_krakenhll_report(
+            self, mod_name,
+            top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=False, rname='mpa'
+    ):
+        taxafs = self.factory.get_results(module=mod_name, result=rname)
+        taxafs = list(taxafs)
+
+        def parse(fname):
+            tbl = pd.read_csv(fname, sep='\t', index_col=1)
+            tbl = tbl['Reads'].to_dict()
+            vec = {
+                clean_taxa(k): v
+                for k, v in tbl.items()
+                if is_rank(k, rank) and is_top_taxa(k, top_taxa)
+            }
+            tot = sum(vec.values())
+            if proportions:
+                vec = {k: v / tot for k, v in vec.items() if (v / tot) >= cutoff}
+            return get_top_n(vec, top_n)
+
+        tbl = {sname: parse(fname)
+               for sname, fname in taxafs}
+        tbl = DataFrame(tbl).fillna(0).transpose()
+        return tbl
+
     def kraken(self, top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=False, level=None):
         return self.generic(
             KRAKEN,
@@ -103,16 +129,26 @@ class TaxonomyFactory(SubFactory):
                 rname = 'report_medium'
             elif 's' in level:
                 rname = 'report_strict'
-
-        return self.generic(
-            KRAKENHLL,
-            top_n=top_n,
-            cutoff=cutoff,
-            rank=rank,
-            top_taxa=top_taxa,
-            proportions=proportions,
-            rname=rname,
-        )
+        try:
+            return self.parse_krakenhll_report(
+                KRAKENHLL,
+                top_n=top_n,
+                cutoff=cutoff,
+                rank=rank,
+                top_taxa=top_taxa,
+                proportions=proportions,
+                rname=rname,
+            )
+        except:
+            return self.generic(
+                KRAKENHLL,
+                top_n=top_n,
+                cutoff=cutoff,
+                rank=rank,
+                top_taxa=top_taxa,
+                proportions=proportions,
+                rname=rname,
+            )
 
     def krakenhll_long(self):
         taxafs = self.factory.get_results(module=KRAKENHLL, result='read_assignments')

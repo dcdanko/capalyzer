@@ -6,4 +6,5 @@ from .pathway_factory import PathwayFactory
 from .taxonomy_factory import TaxonomyFactory
 from .macrobes import MacrobeFactory
 from .read_proportions import ReadPropsFactory
+from .read_stats import ReadStatsFactory
 from .microbe_directory import MicrobeDirectoryFactory

@@ -26,6 +26,7 @@ from ..constants import (
     HMP_COMPARISON,
     MACROBES,
     READ_PROPORTIONS,
+    READ_STATS,
     UNIREF90_COV,
     UNIREF90_RELAB,
     MPA_RELAB,
@@ -176,6 +177,10 @@ class DataTableFactory:
     def read_props(self, **kwargs):
         """Return a table of the proportion of reads assigned to macro categories."""
         return self.csv_in_dir(READ_PROPORTIONS, **kwargs)
+
+    def read_stats(self, **kwargs):
+        """Return a table of the gc content and reads counts."""
+        return self.csv_in_dir(READ_STATS, **kwargs)
 
     def taxa_alpha_diversity(self, **kwargs):
         """Return a Series of diversities."""

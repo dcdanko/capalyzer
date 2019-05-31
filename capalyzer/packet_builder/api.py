@@ -19,6 +19,7 @@ from ..constants import (
     HMP_COMPARISON,
     MACROBES,
     READ_PROPORTIONS,
+    READ_STATS,
     UNIREF90_COV,
     UNIREF90_RELAB,
     MPA_RELAB,
@@ -27,6 +28,7 @@ from ..constants import (
     KRAKENHLL_REFSEQ_STRICT,
     KRAKENHLL_REFSEQ_LONG,
 )
+
 
 
 def write_csv(df_func, fname, overwrite=False, **kwargs):
@@ -50,7 +52,11 @@ def make_all_tables(dirname, tables, overwrite=False):
     dff = SummaryTableFactory(dirname)
 
     def my_write_csv(df_func, fname, **kwargs):
-        return write_csv(df_func, join(tables, fname), overwrite=overwrite, **kwargs)
+        try:
+            return write_csv(df_func, join(tables, fname), overwrite=overwrite, **kwargs)
+        except Exception:
+            print(f'{df_func} failed with file {fname}')
+            raise
 
     yield my_write_csv(dff.taxonomy.krakenhll, KRAKENHLL_REFSEQ)
     yield my_write_csv(dff.taxonomy.krakenhll, KRAKENHLL_REFSEQ_STRICT, level='strict')
@@ -75,6 +81,7 @@ def make_all_tables(dirname, tables, overwrite=False):
     yield my_write_csv(dff.ags.tbl, AVE_GENOME_SIZE)
     yield my_write_csv(dff.hmp.raw_table, HMP_COMPARISON)
     yield my_write_csv(dff.readprops.table, READ_PROPORTIONS)
+    yield my_write_csv(dff.readstats.table, READ_STATS)
 
     yield my_write_csv(dff.pathways.pathways, UNIREF90_RELAB)
     yield my_write_csv(dff.pathways.pathways, UNIREF90_COV, coverage=True)

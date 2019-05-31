@@ -126,7 +126,7 @@ def build_table(report_files, features, rank, min_abundance=0, min_kmer=0, min_c
                     min_rank=rank, min_abundance=min_abundance, min_kmer=min_kmer, min_cov=min_cov)
     all_tbls = report_from_tree(root_node, features, rank, wide=wide)
     axis = 1 if wide else 0
-    tbl = pd.concat(all_tbls, axis=axis, sort=True)
+    tbl = pd.concat(all_tbls, axis=axis)
     return tbl
 
 
