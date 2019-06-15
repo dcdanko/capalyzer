@@ -52,7 +52,7 @@ class DataTableFactory:
                 metadata_tbl = pd.read_csv(metadata_tbl, index_col=0)
             except FileNotFoundError:
                 metadata_tbl = self.csv_in_dir(
-                    metadata_tbl, remove_zero_cols=False, remove_zero_rows=False
+                    metadata_tbl, remove_zero_cols=False, remove_zero_rows=False, no_fill_na=True
                 )
         self.metadata = metadata_tbl
 
@@ -142,7 +142,7 @@ class DataTableFactory:
             return self.csv_in_dir({
                 'rpkm': CARD_RPKM,
                 'rpkmg': CARD_RPKMG,
-            }[tool], **kwargs)
+            }[unit], **kwargs)
 
     def pathways(self, coverage_min=0, **kwargs):
         """Return a table of pathways."""

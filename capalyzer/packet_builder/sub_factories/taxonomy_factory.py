@@ -154,6 +154,9 @@ class TaxonomyFactory(SubFactory):
         taxafs = self.factory.get_results(module=KRAKENHLL, result='read_assignments')
         return longform_taxa(taxafs)
 
+    def krakenhll_angular(self, min_reads=3, min_kmers=64, slope=(100 / 250)):
+        pass
+
     def metaphlan2(self, top_n=0, cutoff=0, rank='species', top_taxa='all', proportions=True, level=None):
         return self.generic(
             METAPHLAN2,

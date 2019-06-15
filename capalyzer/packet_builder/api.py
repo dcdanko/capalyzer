@@ -46,6 +46,20 @@ def write_csv(df_func, fname, overwrite=False, **kwargs):
     return fname
 
 
+def make_long_taxa(dirname, tables, overwrite=False):
+    """Make a long format taxa table."""
+    makedirs(tables, exist_ok=True)
+    dff = SummaryTableFactory(dirname)
+
+    def my_write_csv(df_func, fname, **kwargs):
+        try:
+            return write_csv(df_func, join(tables, fname), overwrite=overwrite, **kwargs)
+        except Exception:
+            print(f'{df_func} failed with file {fname}')
+            raise
+    yield my_write_csv(dff.taxonomy.krakenhll_long, KRAKENHLL_REFSEQ_LONG)
+
+
 def make_all_tables(dirname, tables, overwrite=False):
     """Make a bunch of tables."""
     makedirs(tables, exist_ok=True)

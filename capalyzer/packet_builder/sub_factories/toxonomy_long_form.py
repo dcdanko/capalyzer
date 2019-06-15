@@ -131,7 +131,7 @@ def build_table(report_files, features, rank, min_abundance=0, min_kmer=0, min_c
 
 
 def longform_taxa(report_filenames,
-                  min_abundance=0, min_kmer=256, min_cov=0, wide=False,
+                  min_abundance=0, min_kmer=64, min_cov=0, wide=False,
                   rank=None, features='reads,kmers,dup,cov,percent,tax_reads'):
     """Return a longform taxa table as a pandas dataframe."""
     try:

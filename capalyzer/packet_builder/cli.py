@@ -12,6 +12,15 @@ def cli_make_read_stats(dirname, outname):
     dff.readstats.table().to_csv(outname)
 
 
+@click.command('long-taxa')
+@click.argument('dirname')
+@click.argument('outname', type=click.File('w'))
+def long_taxa(dirname, outname):
+    """Make a bunch of tables."""
+    dff = SummaryTableFactory(dirname)
+    dff.taxonomy.krakenhll_long().to_csv(outname)
+
+
 @click.command('make-tables')
 @click.option('--overwrite/--no-overwrite', default=False)
 @click.argument('dirname')
