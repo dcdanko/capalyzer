@@ -1,5 +1,5 @@
 
-from os.path import join
+from os.path import join, dirname
 
 AMR_DIR = 'antimicrobial_resistance'
 CARD_RPKM = join(AMR_DIR, 'card_amr_rpkm.csv')
@@ -30,3 +30,5 @@ KRAKENHLL_REFSEQ = join(TAXA_DIR, 'refseq.krakenhll_species.csv')
 KRAKENHLL_REFSEQ_MEDIUM = join(TAXA_DIR, 'refseq.krakenhll_species.medium.csv')
 KRAKENHLL_REFSEQ_STRICT = join(TAXA_DIR, 'refseq.krakenhll_species.strict.csv')
 KRAKENHLL_REFSEQ_LONG = join(TAXA_DIR, 'refseq.krakenhll_longform.csv.gz')
+
+MICROBE_DIR = join(dirname(__file__), 'packet_parser/microbe-directory.csv')

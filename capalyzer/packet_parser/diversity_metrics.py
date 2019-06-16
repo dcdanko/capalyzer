@@ -30,8 +30,10 @@ def shannon_entropy(row, rarefy=0):
     return H
 
 
-def richness(row, rarefy=0):
+def richness(row, rarefy=0, count=False):
     """Return the richness of an iterable."""
+    if count:
+        return sum(row > 0)
     row_sum, R = sum(row), 0
     for val in row:
         prob_success = val / row_sum

@@ -1,6 +1,7 @@
 import click
 
 from .dataframes import DataTableFactory
+from .annotate_taxa import annotate_taxa
 
 
 @click.group('diversity')
@@ -43,3 +44,12 @@ def beta_diversity(kind, metric, packet_dir, out_file):
     elif kind == 'amrs':
         tbl = tabler.amr_beta_diversity(metric=metric)
     tbl.to_csv(out_file)
+
+
+@click.command('annotate-taxa')
+@click.argument('taxa_list', type=click.File('r'))
+@click.argument('out', type=click.File('w'))
+def cli_annotate_taxa(taxa_list, out):
+    taxa_list = [el.strip() for el in taxa_list if len(el.strip())]
+    tbl = annotate_taxa(taxa_list)
+    tbl.to_csv(out)

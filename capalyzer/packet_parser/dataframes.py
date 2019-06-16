@@ -199,7 +199,7 @@ class DataTableFactory:
         if metric == 'shannon_entropy':
             return tbl.apply(shannon_entropy, rarefy=rarefy, axis=1)
         elif metric == 'richness':
-            return tbl.apply(richness, rarefy=rarefy, axis=1)
+            return tbl.apply(richness, rarefy=rarefy, count=kwargs.get('count', False), axis=1)
         elif metric == 'chao1':
             return tbl.apply(chao1, rarefy=rarefy, axis=1)
 
