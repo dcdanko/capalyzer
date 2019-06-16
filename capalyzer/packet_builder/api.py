@@ -70,7 +70,7 @@ def make_all_tables(dirname, tables, overwrite=False):
             return write_csv(df_func, join(tables, fname), overwrite=overwrite, **kwargs)
         except Exception:
             print(f'{df_func} failed with file {fname}')
-            raise
+            # raise
 
     yield my_write_csv(dff.taxonomy.krakenhll, KRAKENHLL_REFSEQ)
     yield my_write_csv(dff.taxonomy.krakenhll, KRAKENHLL_REFSEQ_STRICT, level='strict')
