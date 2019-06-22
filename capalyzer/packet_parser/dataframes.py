@@ -10,6 +10,7 @@ from .diversity_metrics import (
     rho_proportionality,
     rarefaction_analysis,
 )
+from .normalize import subsample, proportions
 from .longform_parser import parse_longform_taxa
 from ..constants import (
     CARD_RPKM,
@@ -80,7 +81,11 @@ class DataTableFactory:
         if kwargs.get('remove_zero_rows', True):
             tbl = tbl.loc[tbl.sum(axis=1) > 0]
         if kwargs.get('normalize', False):
-            tbl = (tbl.T / tbl.T.sum()).T
+            if kwargs['normalize'] == 'subsample':
+                n, niter = kwargs.get('n', -1), kwargs.get('niter', 1)
+                tbl = subsample(tbl, n=n, niter=niter)
+            else:
+                tbl = proportions(tbl)
 
         return tbl
 

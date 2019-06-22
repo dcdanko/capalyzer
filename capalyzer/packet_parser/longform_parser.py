@@ -12,7 +12,7 @@ def parse_longform_taxa(filename, rank='all', strict=512, exclude_ranks=['assemb
             tkns = list(csv.reader([line.decode('utf-8')]))[0]
             sample_name, taxa_name, taxa_rank = tkns[0], tkns[1], tkns[3]
             try:
-                nkmers, nreads = int(tkns[7]), int(tkns[9])
+                nkmers, nreads = int(tkns[6]), int(tkns[5])
             except ValueError:
                 print(line)
                 raise

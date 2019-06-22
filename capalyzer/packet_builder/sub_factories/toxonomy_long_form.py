@@ -143,6 +143,7 @@ def longform_taxa(report_filenames,
             report_files, features.split(','), rank,
             min_abundance=min_abundance, min_kmer=min_kmer, min_cov=min_cov, wide=wide
         )
+        tbl = tbl[features.split(',')]
         return tbl
     except Exception:
         [report_file.close() for report_file in report_files.values()]

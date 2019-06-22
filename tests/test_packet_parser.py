@@ -11,12 +11,12 @@ from capalyzer.packet_parser import DataTableFactory
 PACKET_DIR = join(dirname(__file__), 'built_packet')
 
 
-def basic_test_runner(tester, name, n=2, **kwargs):
+def basic_test_runner(tester, name, nrows=2, **kwargs):
     """Check that we can build a table."""
     table_factory = DataTableFactory(PACKET_DIR)
     tbl = getattr(table_factory, name)(**kwargs)
-    if n >= 0:
-        tester.assertEqual(tbl.shape[0], n)
+    if nrows >= 0:
+        tester.assertEqual(tbl.shape[0], nrows)
 
 
 class TestPacketParser(TestCase):
@@ -26,9 +26,13 @@ class TestPacketParser(TestCase):
         """Test that we can build a taxonomy table."""
         basic_test_runner(self, 'taxonomy')
 
+    def test_subsample_taxonomy(self):
+        """Test that we can build a taxonomy table."""
+        basic_test_runner(self, 'taxonomy', nrows=6, niter=3, normalize='subsample')
+
     def test_make_core_taxa(self):
         """Test that we can build a taxonomy table."""
-        basic_test_runner(self, 'core_taxa', n=-1)
+        basic_test_runner(self, 'core_taxa', nrows=-1)
 
     def test_make_taxa_long(self):
         """Test that we can build a taxonomy table from longform."""
@@ -36,7 +40,7 @@ class TestPacketParser(TestCase):
 
     def test_make_amr(self):
         """Test we can make AMR table."""
-        basic_test_runner(self, 'amrs', n=0)
+        basic_test_runner(self, 'amrs', nrows=0)
 
     def test_make_pathways(self):
         """Test we can make pathways table."""
