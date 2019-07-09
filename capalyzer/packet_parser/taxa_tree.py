@@ -50,11 +50,11 @@ class NCBITaxaTree:
 
     def phyla(self, taxon, default=None):
         """Return the phyla for the given taxon."""
-        return self.ancestor_rank('phylum', taxon, default=None)
+        return self.ancestor_rank('phylum', taxon, default=default)
 
     def genus(self, taxon, default=None):
         """Return the genus for the given taxon."""
-        return self.ancestor_rank('genus', taxon, default=None)
+        return self.ancestor_rank('genus', taxon, default=default)
 
     def _tree(self, taxa):
         queue, tree = {self._node(el) for el in taxa}, {}
