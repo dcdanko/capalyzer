@@ -16,7 +16,6 @@ def subsample_row(row, n):
     for val in vals:
         tbl[val] = 1 + tbl.get(val, 0)
     tbl = pd.Series(tbl)
-    tbl.index = row.index
     return tbl
 
 
