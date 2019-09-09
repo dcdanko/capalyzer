@@ -33,6 +33,19 @@ class NCBITaxaTree:
             parent_num = self.parent_map[parent_num]
         return parents
 
+    def ranked_ancestors(self, taxon):
+        """Return a dict of all ancestors of the taxon starting with the taxon itself.
+
+        Keys of the dict are taxon ranks
+        """
+        parents = {self.rank(taxon): taxon}
+        parent_num = self.parent_map[self._node(taxon)]
+        while parent_num:
+            parent_node = self.nodes_to_name[parent_num]
+            parents[parent_node['rank']] = parent_node['name']
+            parent_num = self.parent_map[parent_num]
+        return parents
+
     def parent(self, taxon):
         """Return the name of the parent taxon."""
         return self._name(self.parent_map[self._node(taxon)])
@@ -47,6 +60,11 @@ class NCBITaxaTree:
         if not default:
             raise KeyError(f'{rank} for taxa {taxon} not found.')
         return default
+
+    def rank(self, taxon):
+        """Return the rank of the given taxon."""
+        node = self._node(taxon)
+        return self.nodes_to_name[node]['rank']
 
     def phyla(self, taxon, default=None):
         """Return the phyla for the given taxon."""

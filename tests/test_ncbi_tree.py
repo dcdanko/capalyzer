@@ -22,6 +22,9 @@ class TestTaxaTree(TestCase):
     def test_get_phylum(self):
         self.tree.phyla('Escherichia coli')
 
+    def test_get_rank(self):
+        self.tree.rank('Escherichia coli')
+
     def test_get_parent(self):
         self.tree.parent('Cutibacterium acnes')
 
@@ -41,3 +44,20 @@ class TestTaxaTree(TestCase):
         ]
         for i, anc in enumerate(ancestors):
             self.assertEqual(anc, true[i])
+
+    def test_get_ancestor_ranks(self):
+        ancestors = self.tree.ranked_ancestors('Cutibacterium acnes')
+        true = [
+            'Cutibacterium acnes',
+            'Cutibacterium',
+            'Propionibacteriaceae',
+            'Propionibacteriales',
+            'Actinobacteria',
+            'Actinobacteria',
+            'Terrabacteria group',
+            'Bacteria',
+            'cellular organisms',
+            'root'
+        ]
+        for i, anc in enumerate(ancestors.values()):
+            self.assertIn(anc, true)
