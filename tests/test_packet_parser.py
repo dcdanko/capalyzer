@@ -6,6 +6,7 @@ from unittest import TestCase
 from os.path import join, dirname
 
 from capalyzer.packet_parser import DataTableFactory
+from capalyzer.packet_parser.data_utils import group_small_cols
 
 
 PACKET_DIR = join(dirname(__file__), 'built_packet')
@@ -25,6 +26,12 @@ class TestPacketParser(TestCase):
     def test_make_taxonomy(self):
         """Test that we can build a taxonomy table."""
         basic_test_runner(self, 'taxonomy')
+
+    def test_group_small_cols(self):
+        """Test that we can build a taxonomy table."""
+        taxa = DataTableFactory(PACKET_DIR).taxonomy()
+        taxa = group_small_cols(taxa, top=2)
+        self.assertEqual(taxa.shape[1], 3)
 
     def test_subsample_taxonomy(self):
         """Test that we can build a taxonomy table."""
