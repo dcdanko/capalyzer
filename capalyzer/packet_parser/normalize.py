@@ -8,11 +8,14 @@ def proportions(tbl):
     return tbl
 
 
-def subsample_row(row, n):
+def subsample_row(row, n, drop=True):
     pvals = row.values
     pvals /= sum(pvals)
     vals = choice(row.index, p=pvals, size=(n,))
     tbl = {}
+    if not drop:
+        for val in row.index:
+            tbl[val] = 0
     for val in vals:
         tbl[val] = 1 + tbl.get(val, 0)
     tbl = pd.Series(tbl)
