@@ -63,33 +63,43 @@ def subsample_row(row, n):
 
 
 def train_validate_split(tbl, train_size):
-    train_tbl = tbl.apply(
+    train_tbl = tbl.copy(deep=True).apply(
         lambda row: subsample_row(row, int(row.sum() * train_size)),
         axis=1
     ).fillna(0)
-    val_tbl = tbl - train_tbl
+    val_tbl = (tbl - train_tbl).copy(deep=True)
+    val_tbl = val_tbl.applymap(lambda el: 0 if el < 0 else el)
     return train_tbl, val_tbl
 
 
-def pca_sample_cross_val(tbl, train_size=0.9, min_comp=1, max_comp=100, comp_step=1, losses=[]):
+def run_pca(tbl, n_comp, zero_thresh):
+    pca = PCA(n_components=n_comp)
+    tbl_pca = pca.fit_transform(tbl)
+    tbl_rev = pd.DataFrame(pca.inverse_transform(tbl_pca))
+    tbl_rev.index = tbl.index
+    tbl_rev.columns = tbl.columns
+    tbl_rev = tbl_rev.applymap(lambda el: el if el > zero_thresh else 0)
+    return tbl_rev
+
+
+def pca_sample_cross_val(tbl,
+                         train_size=0.9, min_comp=1, max_comp=100,
+                         comp_step=1, decimals=5, zero_thresh=0.001,
+                         transformer=lambda el: el, losses=[]):
     """Return a PCA normalized table based on molecular cross validation.
 
     Works by splitting each sample into train/validate subsets. Performs PCA
     on train then measures difference of INVPCA to validate. Returns the
     table normalized with the number of components minimizing loss.
     """
+    max_comp = min(max_comp, tbl.shape[0])
     train_tbl, val_tbl = train_validate_split(tbl, train_size)
-    val_prop = proportions(val_tbl)
+    val_prop = transformer(proportions(val_tbl))
     for i in range(min_comp, max_comp + 1, comp_step):
-        pca = PCA(n_components=i)
-        train_pca = pca.fit_transform(train_tbl)
-        predict = pd.DataFrame(proportions(pca.inverse_transform(train_pca)))
-        predict.index = tbl.index
-        predict.columns = tbl.columns
+        predict = transformer(proportions(run_pca(train_tbl, i, zero_thresh)))
         loss = np.linalg.norm(val_prop.values - predict)
+        loss = np.round(loss, decimals=decimals)
         losses.append((i, loss))
-    n_comp = sorted(losses, key=lambda el: el[1])[0][0]
-    pca = PCA(n_components=n_comp)
-    tbl_pca = pca.fit_transform(tbl)
-    tbl_inv = pca.inverse_transform(tbl_pca)
-    return tbl_inv
+    losses.sort(key=lambda el: el[0])
+    losses.sort(key=lambda el: el[1])
+    return run_pca(tbl, losses[0][0], zero_thresh)

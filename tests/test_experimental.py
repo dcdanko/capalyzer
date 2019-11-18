@@ -34,7 +34,9 @@ class TestPacketParser(TestCase):
     def test_pca_cross_val(self):
         taxa = DataTableFactory(PACKET_DIR).taxonomy()
         taxa = pd.DataFrame(pd.concat([taxa] * 10))
+        taxa_copy = taxa.copy(deep=True)
         catch_losses = []  # demo of how to extract detailed loss info
         taxa_pca = pca_sample_cross_val(taxa, comp_step=10, losses=catch_losses)
         self.assertEqual(taxa.shape[0], taxa_pca.shape[0])
         self.assertEqual(taxa.shape[1], taxa_pca.shape[1])
+        self.assertEqual((taxa - taxa_copy).sum().sum(), 0)
