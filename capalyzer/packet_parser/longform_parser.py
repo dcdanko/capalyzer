@@ -3,7 +3,7 @@ import gzip
 import csv
 
 
-def parse_longform_taxa(filename, rank='all', strict=512, min_cov=0, max_read_slope=0,
+def parse_longform_taxa(filename, rank='all', strict=512, min_reads=0, min_cov=0, max_read_slope=0,
                         exclude_ranks=['assembly', 'sequence']):
     """Return a pandas dataframe."""
     tbl = {}
@@ -27,6 +27,8 @@ def parse_longform_taxa(filename, rank='all', strict=512, min_cov=0, max_read_sl
             if strict and nkmers < strict:
                 continue
             if min_cov and cov < min_cov:
+                continue
+            if min_reads and nreads < min_reads:
                 continue
             if max_read_slope and read_slope > max_read_slope:
                 if cov < 0.9:

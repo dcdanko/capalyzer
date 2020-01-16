@@ -111,10 +111,12 @@ class DataTableFactory:
                 exclude = kwargs.get('exclude_ranks', ['assembly', 'sequence'])
                 min_cov = kwargs.get('min_cov', 0)
                 max_read_slope = kwargs.get('max_read_slope', 0)
+                min_reads = kwargs.get('min_reads', 0)
                 return parse_longform_taxa(join(
                     self.packet_dir, KRAKENHLL_REFSEQ_LONG),
                     strict=strict, rank=rank, exclude_ranks=exclude,
-                    min_cov=min_cov, max_read_slope=max_read_slope
+                    min_cov=min_cov, max_read_slope=max_read_slope,
+                    min_reads=min_reads
                 )
 
     def core_taxa(self, core_thresh=0.9, pan_thresh=0.2, zero_thresh=0, **kwargs):
