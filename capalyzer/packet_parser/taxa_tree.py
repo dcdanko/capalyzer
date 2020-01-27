@@ -1,4 +1,6 @@
 
+import pandas as pd
+
 from os import environ
 from os.path import join, dirname
 import gzip
@@ -9,6 +11,8 @@ NAMES_ENV_VAR = 'CAPALYZER_NCBI_NAMES'
 NODES_ENV_VAR = 'CAPALYZER_NCBI_NODES'
 NAMES_DEF = join(dirname(__file__), 'ncbi_tree/names.dmp.gz')
 NODES_DEF = join(dirname(__file__), 'ncbi_tree/nodes.dmp.gz')
+
+RANKS = ['species', 'genus', 'family', 'order', 'class', 'phylum', 'superkingdom']
 
 
 class NCBITaxaTree:
@@ -136,3 +140,68 @@ class NCBITaxaTree:
                 parent_map[node] = parent
 
         return cls(parent_map, names_to_nodes, nodes_to_name)
+
+
+class TaxaTree:
+    """Represent a taxa tree for a specific set of taxa.
+
+    Uses the NCBI taxonomy.
+    """
+
+    def __init__(self, taxa, ncbi_tree=None):
+        self.top_node = {
+            'name': 'root',
+            'rank': 'no_rank',
+            'children': {}
+        }
+        if not ncbi_tree:
+            ncbi_tree = NCBITaxaTree.parse_files()
+        self._ancestry = self._make_ancestry_table(taxa, ncbi_tree)
+        self._make_internal_tree(taxa)
+
+    def _make_ancestry_table(self, taxa, ncbi_tree):
+        """Return a pandas dataframe with the canonical ranks for each taxa."""
+        taxonomy, missing = [], []
+        for taxon in taxa:
+            try:
+                taxonomy.append(ncbi_tree.ranked_ancestors(taxon))
+            except KeyError:
+                missing.append(taxon)  # TODO: some sort of error checking here
+
+        ancestry = pd.DataFrame(taxonomy)[RANKS]
+        ancestry.index = ancestry['species']
+        return ancestry
+
+    def _make_internal_tree(self, taxa):
+        """Construct a tree starting from the top node."""
+        for taxon, row in self._ancestry.iterrows():
+            node = self.top_node
+            if taxon not in taxa:
+                continue
+            for rank in RANKS[::-1]:
+                if row[rank] in node['children']:
+                    node = node['children'][row[rank]]
+                else:
+                    node['children'][row[rank]] = {
+                        'name': str(row[rank]),
+                        'rank': rank,
+                        'children': {}
+                    }
+                    node = node['children'][row[rank]]
+
+    def to_newick(self):
+        """Return a newick string corresponding to this tree."""
+
+        def newick(node):
+            if len(node['children']) > 0:
+                child_str = '('
+                for child_node in node['children'].values():
+                    child_str += newick(child_node) + ','
+                name = '_'.join(node["name"].split())
+                child_str = child_str[:-1] + f'){name}'
+                return child_str
+            else:
+                return '_'.join(node["name"].split())
+
+        newick_str = newick(self.top_node) + ';'
+        return newick_str

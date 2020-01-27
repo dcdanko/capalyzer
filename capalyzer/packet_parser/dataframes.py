@@ -61,7 +61,7 @@ class DataTableFactory:
         """Return a deep copy, with a new metadata table. if specified"""
         if new_metadata is None:
             new_metadata = self.metadata
-        return DataTableFactory(self.packet_dir, metadata_tbl=new_metadata)
+        return type(self)(self.packet_dir, metadata_tbl=new_metadata)
 
     def csv_in_dir(self, fname, **kwargs):
         tbl = pd.read_csv(

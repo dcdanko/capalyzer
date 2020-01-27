@@ -1,7 +1,7 @@
 
 from unittest import TestCase
 
-from capalyzer.packet_parser import NCBITaxaTree
+from capalyzer.packet_parser import NCBITaxaTree, TaxaTree
 
 
 class TestTaxaTree(TestCase):
@@ -10,9 +10,20 @@ class TestTaxaTree(TestCase):
         """Test that we can make a taxa tree."""
         self.tree = NCBITaxaTree.parse_files()
 
+    def test_specific_tree_to_newick(self):
+        taxa = [
+            'Cutibacterium acnes', 'Cutibacterium granulosum',
+            'Bacteria', 'Escherichia', 'Escherichia coli',
+            'Cutibacterium'
+        ]
+        min_len = sum([len(el) for el in taxa])
+        mytree = TaxaTree(taxa, ncbi_tree=self.tree)
+        newick = mytree.to_newick()
+        self.assertGreater(len(newick), min_len)
+
     def test_tree_sort(self):
         taxa = [
-            'Cutibacterium acnes', 'Cutibacterium granulosum', 
+            'Cutibacterium acnes', 'Cutibacterium granulosum',
             'Bacteria', 'Escherichia', 'Escherichia coli',
             'Cutibacterium'
         ]
